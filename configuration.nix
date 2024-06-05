@@ -9,6 +9,9 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./packages.nix
+      ./mnt.nix
+      ./docker.nix
+      ./hyprland.nix
     ];
 
   # Bootloader.
@@ -20,10 +23,6 @@
 
   networking.hostName = "hypr-nix"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -86,11 +85,7 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-  virtualisation.docker.enable = true;
-  virtualisation.docker.rootless = {
-  	enable = true;
-  	setSocketVariable = true;
-  };
+  
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.micqdf = {
     isNormalUser = true;
@@ -137,21 +132,10 @@
   programs.steam.gamescopeSession.enable = true;
 
   programs.gamemode.enable = true;
-  
-
-  fileSystems."/mnt/BigNAS" = {
-    device = "10.27.27.239:/BigNAS";
-    fsType = "nfs";
-  };
-
-  fileSystems."/mnt/NV1" = {
-    device = "/dev/nvme1n1p2";
-    fsType = "btrfs";
-  };
 
   # List services that you want to enable:
   environment.sessionVariables = {
-  	STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/user/.steam/root/compatibilitytools.d";
+  	STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/mciqdf/.steam/root/compatibilitytools.d";
   	hyprshot = "/home/micqdf/flakes/hyprshot/Hyprshot";
   };
 
