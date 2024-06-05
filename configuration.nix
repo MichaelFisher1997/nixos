@@ -100,10 +100,6 @@
   programs.java.enable = true; 
   programs.firefox.enable = true;
   programs.sway.enable = true;
-  programs.hyprland = {
-	enable = true;
-	xwayland.enable = true;
-  };
    
 
   programs.fish.enable = true;
