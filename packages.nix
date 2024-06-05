@@ -1,0 +1,101 @@
+{ pkgs, ... }:
+{
+  environment.systemPackages = with pkgs; [
+  # Applications you want to install with Nix.
+  # You can remove these applications if you don't use them.
+  vim
+  neovim
+  fish
+  zsh
+  curl
+  wget
+  neofetch
+  kitty
+  brave
+  webcord
+  vscode
+  tor-browser
+  monero-gui
+  htop
+  btop
+  ranger
+  tmux
+  lsd
+  nfs-utils
+  waybar
+  wttrbar
+  rofi-wayland
+  hackgen-nf-font
+  tldr
+  blueman
+  wl-clipboard
+  waypaper
+  btrfs-progs
+  golangci-lint
+  golangci-lint-langserver
+  playerctl
+  swaybg
+  swww
+  google-chrome
+  gvfs
+  git
+  go
+  zig
+  slack
+  nwg-look
+  dunst
+  udiskie
+  networkmanagerapplet
+  spotify
+  xorg.xkill
+  ldmtool
+  kitty
+  flatpak
+  libcanberra-gtk3
+  docker
+  docker-compose
+  pamixer
+  xfce.thunar-volman
+  xfce.thunar-dropbox-plugin
+  xfce.thunar-archive-plugin
+  xfce.tumbler
+  hyprland-protocols
+  onlyoffice-bin
+  svt-av1
+  rav1e
+  libaom
+  slurp
+  pavucontrol
+  nix-prefetch-git
+  ddev
+  libsForQt5.kate
+  sublime
+  tailscale
+  libcap 
+  gcc
+  go
+  telegram-desktop
+  falkon
+  firefox
+  php
+  rcon
+  rconc
+  php83Packages.composer
+  zip
+  unzip
+  gzip
+  mangohud
+  protonup
+  lutris
+  wlr-randr
+  bottles
+  ];
+
+  programs.thunar.enable = true;
+  programs.thunar.plugins = with pkgs.xfce; [
+  	thunar-archive-plugin
+  	thunar-volman
+  ];
+
+}
+
