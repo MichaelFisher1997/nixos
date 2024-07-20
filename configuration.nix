@@ -20,12 +20,15 @@
   boot.loader.grub.useOSProber = true;
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
-
+#  boot.supportedFilesystems = [ "zfs" ];
+#  boot.zfs.forceImportRoot = false;
+#  networking.hostId = "a44f5fde";
   networking.hostName = "hypr-nix"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+#  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking
   networking.networkmanager.enable = true;
+  nixpkgs.config.allowBroken = true;
 
   # Set your time zone.
   time.timeZone = "Europe/London";
@@ -46,16 +49,17 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
+  # services.xserver.enable = true;
+	 services.xserver = {
+	   enable = true;
+	   layout = "gb";
+	   xkbVariant = "";
+	 };
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   # Configure keymap in X11
-  services.xserver = {
-    layout = "gb";
-    xkbVariant = "";
-  };
+ 
 
   # Configure console keymap
   console.keyMap = "uk";
@@ -91,14 +95,10 @@
     isNormalUser = true;
     description = "micqdf";
     extraGroups = [ "networkmanager" "wheel" "docker"];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
   };
 
   # Install programs config
   programs.java.enable = true; 
-  programs.firefox.enable = true;
   programs.sway.enable = true;
    
 
@@ -121,6 +121,11 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
+    extraPackages = with pkgs; [
+      vulkan-loader
+      vulkan-validation-layers
+      vulkan-extension-layer
+    ];
   };
 
   services.xserver.videoDrivers = ["amdgpu"];
@@ -129,12 +134,13 @@
 
   programs.gamemode.enable = true;
 
-  # List services that you want to enable:
-  environment.sessionVariables = {
-  	STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/mciqdf/.steam/root/compatibilitytools.d";
-  	hyprshot = "/home/micqdf/flakes/hyprshot/Hyprshot";
-  };
-
+#  # List services that you want to enable:
+#  environment.sessionVariables = {
+#  	STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/micqdf/.steam/root/compatibilitytools.d";
+#  	hyprshot = "/home/micqdf/flakes/hyprshot/Hyprshot";
+#  };
+#
+  security.polkit.enable = true;
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.tumbler.enable = true;
@@ -152,7 +158,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
 

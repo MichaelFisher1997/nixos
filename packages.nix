@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
+let
+  unstable = import 
+    (builtins.fetchTarball "channel:nixos-unstable")
+    { config = config.nixpkgs.config; };
+in
 {
   environment.systemPackages = with pkgs; [
   # Applications you want to install with Nix.
@@ -22,29 +27,17 @@
   tmux
   lsd
   nfs-utils
-  waybar
-  wttrbar
-  rofi-wayland
-  hackgen-nf-font
   tldr
-  blueman
-  wl-clipboard
-  waypaper
   btrfs-progs
   golangci-lint
   golangci-lint-langserver
-  playerctl
-  swaybg
-  swww
   google-chrome
-  gvfs
+  # gvfs
   git
+  ipmitool
   go
   zig
   slack
-  nwg-look
-  dunst
-  udiskie
   networkmanagerapplet
   spotify
   xorg.xkill
@@ -55,17 +48,11 @@
   docker
   docker-compose
   pamixer
-  xfce.thunar-volman
-  xfce.thunar-dropbox-plugin
-  xfce.thunar-archive-plugin
-  xfce.tumbler
-  hyprland-protocols
   onlyoffice-bin
   svt-av1
   rav1e
   libaom
   slurp
-  pavucontrol
   nix-prefetch-git
   ddev
   libsForQt5.kate
@@ -87,14 +74,34 @@
   mangohud
   protonup
   lutris
-  wlr-randr
   bottles
-  ];
-
-  programs.thunar.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
-  	thunar-archive-plugin
-  	thunar-volman
+  wine
+  #peazip
+  _7zz
+  unrar
+  spice
+  spice-gtk
+  spice-vdagent
+  haruna
+  air
+  tailwindcss
+  betterdiscord-installer
+  vesktop
+  vencord
+  fastfetch
+  davinci-resolve-studio
+  obs-studio
+  lunarvim
+  qbittorrent
+  godot_4
+  vlc
+  python3
+  gparted
+  parted
+  amdgpu_top
+  unstable.zed-editor
+  unstable.hyprshot
+  guacamole-client
   ];
 
 }
