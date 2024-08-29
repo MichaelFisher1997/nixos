@@ -73,9 +73,9 @@ in
   gzip
   mangohud
   protonup
-  lutris
   bottles
   wine
+  wine64
   #peazip
   _7zz
   unrar
@@ -102,6 +102,10 @@ in
   unstable.zed-editor
   unstable.hyprshot
   guacamole-client
+  mono
+  pika-backup
+  lutris
+  audacity
   ];
 
 }

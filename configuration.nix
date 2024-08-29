@@ -12,6 +12,7 @@
       ./mnt.nix
       ./docker.nix
       ./hyprland.nix
+      ./networking.nix
     ];
 
   # Bootloader.
@@ -23,7 +24,6 @@
 #  boot.supportedFilesystems = [ "zfs" ];
 #  boot.zfs.forceImportRoot = false;
 #  networking.hostId = "a44f5fde";
-  networking.hostName = "hypr-nix"; # Define your hostname.
 #  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking
@@ -52,14 +52,17 @@
   # services.xserver.enable = true;
 	 services.xserver = {
 	   enable = true;
-	   layout = "gb";
-	   xkbVariant = "";
+	   xkb.layout = "gb";
+	   xkb.variant = "";
 	 };
+  services.xserver.videoDrivers = ["amdgpu"];
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  # Configure keymap in X11
- 
+  # Enable kde6
+  #services.displayManager.sddm.enable = false;
+  #services.displayManager.sddm.wayland.enable = false;
+  #services.desktopManager.plasma6.enable = true;
 
   # Configure console keymap
   console.keyMap = "uk";
@@ -89,7 +92,7 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-  
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.micqdf = {
     isNormalUser = true;
@@ -98,20 +101,20 @@
   };
 
   # Install programs config
-  programs.java.enable = true; 
+  programs.java.enable = true;
   programs.sway.enable = true;
-   
+
 
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
-  
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  
-  
+
+
   #hardware.opengl.driSupport = true; # This is already enabled by default
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
@@ -128,8 +131,7 @@
     ];
   };
 
-  services.xserver.videoDrivers = ["amdgpu"];
-  programs.steam.enable = true; 
+  programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
 
   programs.gamemode.enable = true;
@@ -160,6 +162,6 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
   system.autoUpgrade.enable = true;
-  system.autoUpgrade.allowReboot = true;
+  system.autoUpgrade.allowReboot = false;
 
 }
