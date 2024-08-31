@@ -118,7 +118,10 @@
   #hardware.opengl.driSupport = true; # This is already enabled by default
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
-
+  #cosmic
+  hardware.system76.enableAll = true;
+  #services.desktopManager.cosmic.enable = true;
+  #services.displayManager.cosmic-greeter.enable = true;
 
   hardware.opengl = {
     enable = true;
@@ -146,7 +149,6 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.tumbler.enable = true;
-  services.tailscale.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

@@ -106,6 +106,7 @@ in
   pika-backup
   lutris
   audacity
+  tree
   ];
 
 }
