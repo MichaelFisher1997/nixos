@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  unstable = import 
+  unstable = import
     (builtins.fetchTarball "channel:nixos-unstable")
     { config = config.nixpkgs.config; };
 in
@@ -10,13 +10,18 @@ in
   # You can remove these applications if you don't use them.
   vim
   neovim
+  ngrok
   fish
   zsh
   curl
   wget
+  ccache
+  appstream
   neofetch
   kitty
+  discord
   brave
+  simplescreenrecorder
   webcord
   vscode
   tor-browser
@@ -29,13 +34,14 @@ in
   nfs-utils
   tldr
   btrfs-progs
+  git-lfs
   golangci-lint
   golangci-lint-langserver
   google-chrome
   # gvfs
   git
   ipmitool
-  go
+  #go
   zig
   slack
   networkmanagerapplet
@@ -44,6 +50,10 @@ in
   ldmtool
   kitty
   flatpak
+  flatpak-builder
+  noto-fonts-color-emoji
+  twemoji-color-font
+  #whatsapp-emoji-font
   libcanberra-gtk3
   docker
   docker-compose
@@ -58,9 +68,9 @@ in
   libsForQt5.kate
   sublime
   tailscale
-  libcap 
+  libcap
   gcc
-  go
+  unstable.go
   telegram-desktop
   falkon
   firefox
@@ -76,6 +86,7 @@ in
   bottles
   wine
   wine64
+  appstream-glib
   #peazip
   _7zz
   unrar
@@ -86,6 +97,7 @@ in
   air
   tailwindcss
   betterdiscord-installer
+  rpi-imager
   vesktop
   vencord
   fastfetch
@@ -93,7 +105,6 @@ in
   obs-studio
   lunarvim
   qbittorrent
-  godot_4
   vlc
   python3
   gparted
@@ -107,7 +118,20 @@ in
   lutris
   audacity
   tree
+  ldmtool
+  ntfs3g
+  exercism
+  cmake
+  glew
+  glfw
+  libGL
+  unityhub
+  cmake
+  SDL2
+  vulkan-loader
+  vulkan-tools
+  vulkan-headers
+  wayland-protocols
   ];
 
 }
-

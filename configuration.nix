@@ -13,6 +13,7 @@
       ./docker.nix
       ./hyprland.nix
       ./networking.nix
+      ./i3.nix
     ];
 
   # Bootloader.
@@ -21,6 +22,7 @@
   boot.loader.grub.useOSProber = true;
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.supportedFilesystems = [ "ntfs" ];
 #  boot.supportedFilesystems = [ "zfs" ];
 #  boot.zfs.forceImportRoot = false;
 #  networking.hostId = "a44f5fde";
@@ -80,7 +82,7 @@
   services.pipewire = {
     enable = true;
     alsa.enable = true;
-    alsa.support32Bit = true;
+    #alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
@@ -118,8 +120,13 @@
   #hardware.opengl.driSupport = true; # This is already enabled by default
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+  hardware.bluetooth.settings = {
+    General = {
+      Enable = "Source,Sink,Media,Socket";
+    };
+  };
   #cosmic
-  hardware.system76.enableAll = true;
+  #hardware.system76.enableAll = true;
   #services.desktopManager.cosmic.enable = true;
   #services.displayManager.cosmic-greeter.enable = true;
 

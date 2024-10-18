@@ -18,19 +18,17 @@
     };
     where = "/mnt/BigNAS";
   }];
-  #fileSystems."/mnt/BigNAS" = {
-  #  device = "10.27.27.239:/BigNAS";
-  #  fsType = "nfs";
-  #  options = [ "x-systemd.automount" "noauto" ];
-  #};
-
-  #fileSystems."/mnt/MainPool" = {
-  #  device = "10.27.27.12:/MainPool";
-  #  fsType = "nfs";
-  #};
-
   fileSystems."/mnt/NV1" = {
-    device = "/dev/nvme1n1p1";
+    device = "/dev/disk/by-uuid/a41cc08d-10f2-40dd-b76a-976764a50cea";
     fsType = "btrfs";
   };
+  fileSystems."/mnt/ssd2" = {
+    device = "/dev/disk/by-uuid/bc0d1423-5682-4150-906f-b1a154a316ea";
+    fsType = "btrfs";
+  };
+#  fileSystems."/mnt/ntfs" = {
+#    device = "/dev/disk/by-uuid/c51b755c-24d3-11e6-a186-408d5c1ea148";
+#    fsType = "ntfs-3g";
+#    options = ["rw""uid=1000"];
+#  };
 }
