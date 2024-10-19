@@ -13,7 +13,7 @@
       ./docker.nix
       ./hyprland.nix
       ./networking.nix
-      ./i3.nix
+      #./i3.nix
     ];
 
   # Bootloader.
@@ -52,15 +52,54 @@
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
-	 services.xserver = {
-	   enable = true;
-	   xkb.layout = "gb";
-	   xkb.variant = "";
-	 };
-  services.xserver.videoDrivers = ["amdgpu"];
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+ # services.xserver = {
+ #  enable = true;
+ #  xkb.layout = "gb";
+ #  xkb.variant = "";
+ #  videoDrivers = ["amdgpu"];
+ #  displayManager.gdm.enable = true;
+ #  desktopManager.gnome.enable = true;
+ #  windowManager.i3 = {
+ #   enable = true;
+ #   package = pkgs.i3-gaps;
+ #  };
+ # };
+  # XServer Configuration
+  services.xserver = {
+    enable = true;
+    xkb.layout = "gb";
+    xkb.variant = "";
+    videoDrivers = ["amdgpu"];
+
+    # Desktop Managers Configuration
+    desktopManager = {
+      gnome.enable = true;
+    };
+
+    # Window Managers Configuration
+    windowManager = {
+      i3 = {
+        enable = true;
+        package = pkgs.i3-gaps; # Optional: use i3-gaps if you prefer the version with gaps
+        extraPackages = with pkgs; [
+          i3status
+          i3lock
+          rofi
+          lxappearance
+        ];
+      };
+    };
+
+    # Display Manager Configuration
+    displayManager = {
+      gdm = {
+        enable = false;
+      };
+      lightdm = {
+        enable = true;
+      };
+    };
+  };
   # Enable kde6
   #services.displayManager.sddm.enable = false;
   #services.displayManager.sddm.wayland.enable = false;
@@ -101,6 +140,9 @@
     description = "micqdf";
     extraGroups = [ "networkmanager" "wheel" "docker"];
   };
+ # environment.systemPackages = [
+ #   pkgs.home-manager
+ # ];
 
   # Install programs config
   programs.java.enable = true;

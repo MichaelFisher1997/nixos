@@ -1,3 +1,4 @@
+#this might be redundent 
 {config, pkgs, callPackage, ... }:
 {
  services.xserver = {

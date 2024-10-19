@@ -14,6 +14,7 @@ in
   fish
   zsh
   curl
+  i3
   wget
   ccache
   appstream
@@ -132,6 +133,7 @@ in
   vulkan-tools
   vulkan-headers
   wayland-protocols
+  minecraft
   ];
 
 }
