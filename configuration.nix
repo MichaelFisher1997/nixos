@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -15,6 +15,7 @@
       ./networking.nix
       #./i3.nix
     ];
+    
 
   # Bootloader.
   boot.loader.grub.enable = true;
@@ -22,6 +23,9 @@
   boot.loader.grub.useOSProber = true;
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [
+    "cgroup_enable=cpuset,cpu,cpuacct,blkio,devices,freezer,net_cls,perf_event,net_prio,hugetlb,pids"
+  ];
   boot.supportedFilesystems = [ "ntfs" ];
 #  boot.supportedFilesystems = [ "zfs" ];
 #  boot.zfs.forceImportRoot = false;
@@ -50,60 +54,46 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
- # services.xserver = {
- #  enable = true;
- #  xkb.layout = "gb";
- #  xkb.variant = "";
- #  videoDrivers = ["amdgpu"];
- #  displayManager.gdm.enable = true;
- #  desktopManager.gnome.enable = true;
- #  windowManager.i3 = {
- #   enable = true;
- #   package = pkgs.i3-gaps;
- #  };
- # };
-  # XServer Configuration
-  services.xserver = {
-    enable = true;
-    xkb.layout = "gb";
-    xkb.variant = "";
-    videoDrivers = ["amdgpu"];
+  services = {
+    # Enable X11 and configure Wayland support
+    xserver = {
+      enable = true;
+      xkb.layout = "gb";
+      xkb.variant = "";
+      videoDrivers = ["amdgpu"];
 
-    # Desktop Managers Configuration
-    desktopManager = {
-      gnome.enable = true;
-    };
+      # Enable GDM as the display manager
+      displayManager.gdm.enable = true;
 
-    # Window Managers Configuration
-    windowManager = {
-      i3 = {
-        enable = true;
-        package = pkgs.i3-gaps; # Optional: use i3-gaps if you prefer the version with gaps
-        extraPackages = with pkgs; [
-          i3status
-          i3lock
-          rofi
-          lxappearance
-        ];
+      # Desktop Managers Configuration
+      desktopManager = {
+        gnome.enable = true;       # GNOME
+        plasma6.enable = true;     # Use plasma5 for KDE6 as well
       };
-    };
 
-    # Display Manager Configuration
-    displayManager = {
-      gdm = {
-        enable = false;
-      };
-      lightdm = {
-        enable = true;
+      # Window Managers Configuration
+      windowManager = {
+        i3 = {
+          enable = true;
+          package = pkgs.i3-gaps; # Optional: use i3-gaps for gaps support
+          extraPackages = with pkgs; [
+            i3lock
+            rofi
+            lxappearance
+          ];
+        };
+        # Note: No need to enable Hyprland here, as it's done in hyprland.nix
       };
     };
   };
-  # Enable kde6
-  #services.displayManager.sddm.enable = false;
-  #services.displayManager.sddm.wayland.enable = false;
-  #services.desktopManager.plasma6.enable = true;
+
+  # XDG Portals Configuration for Wayland
+  xdg.portal = {
+    enable = flase;
+    extraPortals = [
+      pkgs.xdg-desktop-portal
+    ];
+  };
 
   # Configure console keymap
   console.keyMap = "uk";
@@ -157,7 +147,9 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-
+    #nixpkgs.overlays = [
+    #  (import ./godot4-overlay.nix)
+    #];
 
   #hardware.opengl.driSupport = true; # This is already enabled by default
   hardware.bluetooth.enable = true; # enables support for Bluetooth
@@ -187,6 +179,7 @@
   programs.steam.gamescopeSession.enable = true;
 
   programs.gamemode.enable = true;
+    programs.ssh.askPassword = lib.mkForce "/nix/store/qjl45ra2yaqn88h6s9f7b79zpja9dy8b-seahorse-43.0/libexec/seahorse/ssh-askpass";
 
 #  # List services that you want to enable:
 #  environment.sessionVariables = {
@@ -211,7 +204,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = false;
 

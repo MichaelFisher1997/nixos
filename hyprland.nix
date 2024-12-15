@@ -12,6 +12,7 @@
     blueman
     rofi-wayland
     waybar
+    polybar
     wttrbar
     hackgen-nf-font
     playerctl
@@ -34,6 +35,7 @@
     catppuccin-kvantum
     dolphin
     nwg-drawer
+    hyprpaper
 	];
 
   programs.thunar.enable = true;
@@ -41,11 +43,4 @@
   	thunar-archive-plugin
   	thunar-volman
   ];
-  # xdg.portal = {
-	# 	enable = true;
-	# 	wlr.enable = true;
-	# 	extraPortals = with pkgs; [
-	# 		xdg-desktop-portal-gtk
-	# 	];
-	# };
 }

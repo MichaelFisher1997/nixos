@@ -24,13 +24,12 @@ in
   brave
   simplescreenrecorder
   webcord
-  vscode
+  unstable.vscode
   tor-browser
   monero-gui
   htop
   btop
   ranger
-  tmux
   lsd
   nfs-utils
   tldr
@@ -58,6 +57,7 @@ in
   libcanberra-gtk3
   docker
   docker-compose
+  kubectl
   pamixer
   onlyoffice-bin
   svt-av1
@@ -88,6 +88,7 @@ in
   wine
   wine64
   appstream-glib
+  xorg.xprop
   #peazip
   _7zz
   unrar
@@ -105,13 +106,12 @@ in
   davinci-resolve-studio
   obs-studio
   lunarvim
-  qbittorrent
   vlc
   python3
   gparted
   parted
   amdgpu_top
-  unstable.zed-editor
+  #unstable.zed-editor
   unstable.hyprshot
   guacamole-client
   mono
@@ -134,6 +134,34 @@ in
   vulkan-headers
   wayland-protocols
   minecraft
+  arandr
+  maim
+  xclip
+  xdotool
+  nitrogen
+  polybarFull
+  pywal
+  calc
+  networkmanager_dmenu
+  eww
+  picom
+  ffmpeg_4
+  ffmpeg_4-full
+  ffmpeg_4-headless
+  vesktop
+  minikube
+  terraform
+  fd
+  fzf
+  bat
+  thefuck
+  tmux
+  kdePackages.filelight
+  remmina
+  zellij
+  alacritty
+  lolcat
+  protontricks
   ];
 
 }
