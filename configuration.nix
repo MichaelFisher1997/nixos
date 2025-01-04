@@ -56,6 +56,11 @@
 
   services = {
     # Enable X11 and configure Wayland support
+      # Desktop Managers Configuration
+    xserver.desktopManager.gnome.enable = true;
+    desktopManager = {
+      plasma6.enable = true;     # Use plasma5 for KDE6 as well
+    };
     xserver = {
       enable = true;
       xkb.layout = "gb";
@@ -65,11 +70,6 @@
       # Enable GDM as the display manager
       displayManager.gdm.enable = true;
 
-      # Desktop Managers Configuration
-      desktopManager = {
-        gnome.enable = true;       # GNOME
-        plasma6.enable = true;     # Use plasma5 for KDE6 as well
-      };
 
       # Window Managers Configuration
       windowManager = {
@@ -102,7 +102,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   #sound.enable = true;
   services.flatpak.enable = true;
   services.blueman.enable = true;
@@ -164,10 +164,10 @@
   #services.desktopManager.cosmic.enable = true;
   #services.displayManager.cosmic-greeter.enable = true;
 
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
+    #driSupport = true;
+    #driSupport32Bit = true;
     extraPackages = with pkgs; [
       vulkan-loader
       vulkan-validation-layers

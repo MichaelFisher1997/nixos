@@ -2,7 +2,7 @@
   inputs = {
     # This points to the same nixpkgs that nixos-cosmic is using by default.
     # If you want to stick to a stable channel, you can switch "nixpkgs" to "nixpkgs-stable".
-    nixpkgs.follows = "nixos-cosmic/nixpkgs";
+    nixpkgs.follows = "nixos-cosmic/nixpkgs-stable";
 
     # The main input: NixOS COSMIC
     nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
