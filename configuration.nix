@@ -89,10 +89,10 @@
 
   # XDG Portals Configuration for Wayland
   xdg.portal = {
-    enable = flase;
-    extraPortals = [
-      pkgs.xdg-desktop-portal
-    ];
+    enable = true;
+    #extraPortals = [
+    #  pkgs.xdg-desktop-portal
+    #];
   };
 
   # Configure console keymap
@@ -103,7 +103,7 @@
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
-  sound.enable = true;
+  #sound.enable = true;
   services.flatpak.enable = true;
   services.blueman.enable = true;
   security.rtkit.enable = true;

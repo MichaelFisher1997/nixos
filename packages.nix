@@ -25,6 +25,7 @@ in
   simplescreenrecorder
   webcord
   unstable.vscode
+  unstable.hyprsunset
   tor-browser
   monero-gui
   htop
@@ -162,6 +163,8 @@ in
   alacritty
   lolcat
   protontricks
+  unstable.zed-editor
+  unstable.ghostty
   ];
 
 }
