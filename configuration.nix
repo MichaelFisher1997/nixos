@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports =
@@ -56,11 +56,6 @@
 
   services = {
     # Enable X11 and configure Wayland support
-      # Desktop Managers Configuration
-    xserver.desktopManager.gnome.enable = true;
-    desktopManager = {
-      plasma6.enable = true;     # Use plasma5 for KDE6 as well
-    };
     xserver = {
       enable = true;
       xkb.layout = "gb";
@@ -70,6 +65,11 @@
       # Enable GDM as the display manager
       displayManager.gdm.enable = true;
 
+      # Desktop Managers Configuration
+      desktopManager = {
+        gnome.enable = true;       # GNOME
+        plasma6.enable = true;     # Use plasma5 for KDE6 as well
+      };
 
       # Window Managers Configuration
       windowManager = {
@@ -90,9 +90,9 @@
   # XDG Portals Configuration for Wayland
   xdg.portal = {
     enable = true;
-    #extraPortals = [
-    #  pkgs.xdg-desktop-portal
-    #];
+    extraPortals = [
+      pkgs.xdg-desktop-portal
+    ];
   };
 
   # Configure console keymap
@@ -102,7 +102,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
+  hardware.pulseaudio.enable = false;
   #sound.enable = true;
   services.flatpak.enable = true;
   services.blueman.enable = true;
@@ -164,7 +164,7 @@
   #services.desktopManager.cosmic.enable = true;
   #services.displayManager.cosmic-greeter.enable = true;
 
-  hardware.graphics = {
+  hardware.opengl = {
     enable = true;
     #driSupport = true;
     #driSupport32Bit = true;
@@ -172,6 +172,9 @@
       vulkan-loader
       vulkan-validation-layers
       vulkan-extension-layer
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      libvdpau-va-gl
     ];
   };
 

@@ -11,6 +11,7 @@ in
   vim
   neovim
   ngrok
+  clang-tools
   fish
   zsh
   curl
@@ -73,8 +74,11 @@ in
   libcap
   gcc
   unstable.go
+  unstable.tilt
   telegram-desktop
   falkon
+  unstable.bun
+  unstable.nodejs_23
   firefox
   php
   rcon
@@ -112,6 +116,7 @@ in
   gparted
   parted
   amdgpu_top
+  unstable.amdenc
   #unstable.zed-editor
   unstable.hyprshot
   guacamole-client
@@ -130,6 +135,7 @@ in
   unityhub
   cmake
   SDL2
+  SDL2_image
   vulkan-loader
   vulkan-tools
   vulkan-headers
@@ -165,6 +171,7 @@ in
   protontricks
   unstable.zed-editor
   unstable.ghostty
+  libsForQt5.kdenlive
   ];
 
 }
