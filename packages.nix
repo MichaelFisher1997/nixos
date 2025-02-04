@@ -6,172 +6,191 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
-  # Applications you want to install with Nix.
-  # You can remove these applications if you don't use them.
-  vim
-  neovim
-  ngrok
-  clang-tools
-  fish
-  zsh
-  curl
-  i3
-  wget
-  ccache
-  appstream
-  neofetch
-  kitty
-  discord
-  brave
-  simplescreenrecorder
-  webcord
-  unstable.vscode
-  unstable.hyprsunset
-  tor-browser
-  monero-gui
-  htop
-  btop
-  ranger
-  lsd
-  nfs-utils
-  tldr
-  btrfs-progs
-  git-lfs
-  golangci-lint
-  golangci-lint-langserver
-  google-chrome
-  # gvfs
-  git
-  ipmitool
-  #go
-  zig
-  slack
-  networkmanagerapplet
-  spotify
-  xorg.xkill
-  ldmtool
-  kitty
-  flatpak
-  flatpak-builder
-  noto-fonts-color-emoji
-  twemoji-color-font
-  #whatsapp-emoji-font
-  libcanberra-gtk3
-  docker
-  docker-compose
-  kubectl
-  pamixer
-  onlyoffice-bin
-  svt-av1
-  rav1e
-  libaom
-  slurp
-  nix-prefetch-git
-  ddev
-  libsForQt5.kate
-  sublime
-  tailscale
-  libcap
-  gcc
-  unstable.go
-  unstable.tilt
-  telegram-desktop
-  falkon
-  unstable.bun
-  unstable.nodejs_23
-  firefox
-  php
-  rcon
-  rconc
-  php83Packages.composer
-  zip
-  unzip
-  gzip
-  mangohud
-  protonup
-  bottles
-  wine
-  wine64
-  appstream-glib
-  xorg.xprop
-  #peazip
-  _7zz
-  unrar
-  spice
-  spice-gtk
-  spice-vdagent
-  haruna
-  air
-  tailwindcss
-  betterdiscord-installer
-  rpi-imager
-  vesktop
-  vencord
-  fastfetch
-  davinci-resolve-studio
-  obs-studio
-  lunarvim
-  vlc
-  python3
-  gparted
-  parted
-  amdgpu_top
-  unstable.amdenc
-  #unstable.zed-editor
-  unstable.hyprshot
-  guacamole-client
-  mono
-  pika-backup
-  lutris
-  audacity
-  tree
-  ldmtool
-  ntfs3g
-  exercism
-  cmake
-  glew
-  glfw
-  libGL
-  unityhub
-  cmake
-  SDL2
-  SDL2_image
-  vulkan-loader
-  vulkan-tools
-  vulkan-headers
-  wayland-protocols
-  minecraft
-  arandr
-  maim
-  xclip
-  xdotool
-  nitrogen
-  polybarFull
-  pywal
-  calc
-  networkmanager_dmenu
-  eww
-  picom
-  ffmpeg_4
-  ffmpeg_4-full
-  ffmpeg_4-headless
-  vesktop
-  minikube
-  terraform
-  fd
-  fzf
-  bat
-  thefuck
-  tmux
-  kdePackages.filelight
-  remmina
-  zellij
-  alacritty
-  lolcat
-  protontricks
-  unstable.zed-editor
-  unstable.ghostty
-  libsForQt5.kdenlive
+    # Text Editors
+    vim
+    neovim
+    libsForQt5.kate
+    sublime
+    lunarvim
+    unstable.zed-editor
+    
+    # Development Tools
+    clang-tools
+    gcc
+    cmake
+    glew
+    glfw
+    libGL
+    SDL2
+    unstable.sdl3
+    SDL2_image
+    vulkan-loader
+    vulkan-tools
+    vulkan-headers
+    wayland-protocols
+    golangci-lint
+    golangci-lint-langserver
+    python3
+    php
+    php83Packages.composer
+    libsForQt5.kdenlive
+    exercism
+    betterdiscord-installer
+    unstable.nodejs_23
+    unstable.go
+    unstable.bun
+    air
+    tailwindcss
+    
+    # Version Control
+    git
+    git-lfs
+    nix-prefetch-git
+    
+    # Terminals
+    kitty
+    alacritty
+    
+    # Shell Utilities
+    fish
+    zsh
+    curl
+    wget
+    tree
+    fd
+    fzf
+    bat
+    thefuck
+    tmux
+    zellij
+    lolcat
+    lsd
+    tldr
+    
+    # File Management
+    ranger
+    _7zz
+    unrar
+    zip
+    unzip
+    gzip
+    gvfs
+    btrfs-progs
+    nfs-utils
+    ntfs3g
+    
+    # System Utilities
+    htop
+    btop
+    amdgpu_top
+    parted
+    gparted
+    xorg.xprop
+    xorg.xkill
+    calc
+    maim
+    xclip
+    xdotool
+    networkmanager_dmenu
+    virt-manager
+    networkmanagerapplet
+    polybarFull
+    picom
+    arandr
+    nitrogen
+    pywal
+    ldmtool
+    
+    # Window Managers
+    i3
+    eww
+    vesktop
+    unstable.hyprsunset
+    unstable.hyprshot
+    
+    # Web Browsers
+    brave
+    google-chrome
+    firefox
+    falkon
+    tor-browser
+    
+    # Communication
+    discord
+    webcord
+    slack
+    telegram-desktop
+    
+    # Media
+    vlc
+    simplescreenrecorder
+    obs-studio
+    davinci-resolve-studio
+    audacity
+    haruna
+    
+    # Gaming
+    mangohud
+    protonup
+    protontricks
+    lutris
+    bottles
+    wine
+    wine64
+    minecraft
+    
+    # Fonts
+    noto-fonts-color-emoji
+    twemoji-color-font
+    catppuccin-kvantum
+    themechanger
+    
+    # Backup and Recovery
+    pika-backup
+    megasync
+    
+    # Networking
+    ngrok
+    ipmitool
+    tailscale
+    remmina
+    ddev
+    
+    # Containers and Virtualization
+    docker
+    docker-compose
+    kubectl
+    terraform
+    minikube
+    
+    # Security
+    onlyoffice-bin
+    rcon
+    rconc
+    monero-gui
+    
+    # Graphics
+    spice
+    spice-gtk
+    spice-vdagent
+    
+    # Themes and Customization
+    kdePackages.qt6ct
+    catppuccin-kvantum
+    
+    # Multimedia Tools
+    svt-av1
+    rav1e
+    libaom
+    
+    # Miscellaneous
+    fastfetch
+    betterdiscord-installer
+    unstable.ghostty
+    guacamole-client
+    rpi-imager
+    kdePackages.filelight
+
   ];
 
 }

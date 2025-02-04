@@ -7,7 +7,7 @@
     mountConfig = {
       Options = "noatime";
     };
-    what = "100.105.0.115:/BigNAS";
+    what = "10.27.27.239:/BigNAS";
     where = "/mnt/BigNAS";
   }];
 
