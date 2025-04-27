@@ -29,6 +29,8 @@
     xfce.tumbler
     pavucontrol
     wlr-randr
+    libcanberra-gtk3
+    pamixer
     grim
     discocss
     themechanger

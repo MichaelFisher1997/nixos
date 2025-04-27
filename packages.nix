@@ -12,9 +12,11 @@ in
     libsForQt5.kate
     sublime
     lunarvim
-    unstable.zed-editor
+    vscode
+    #unstable.zed-editor
     
     # Development Tools
+    openjdk
     clang-tools
     gcc
     cmake
@@ -41,6 +43,9 @@ in
     unstable.bun
     air
     tailwindcss
+    google-cloud-sdk-gce
+    kubo
+    hashcat
     
     # Version Control
     git
@@ -81,6 +86,7 @@ in
     
     # System Utilities
     htop
+    vault
     btop
     amdgpu_top
     parted
@@ -100,6 +106,8 @@ in
     nitrogen
     pywal
     ldmtool
+    smartmontools
+    gptfdisk
     
     # Window Managers
     i3
@@ -182,6 +190,7 @@ in
     svt-av1
     rav1e
     libaom
+    sunshine
     
     # Miscellaneous
     fastfetch

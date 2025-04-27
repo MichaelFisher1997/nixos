@@ -13,6 +13,8 @@
       ./docker.nix
       ./hyprland.nix
       ./networking.nix
+      ./gpu.nix
+      ./sunshine.nix
       #./i3.nix
     ];
     
@@ -27,6 +29,9 @@
     "cgroup_enable=cpuset,cpu,cpuacct,blkio,devices,freezer,net_cls,perf_event,net_prio,hugetlb,pids"
   ];
   boot.supportedFilesystems = [ "ntfs" ];
+  services.zfs.autoScrub.enable = true;
+  services.zfs.trim.enable = true;
+
 #  boot.supportedFilesystems = [ "zfs" ];
 #  boot.zfs.forceImportRoot = false;
 #  networking.hostId = "a44f5fde";
@@ -91,7 +96,7 @@
   xdg.portal = {
     enable = true;
     extraPortals = [
-      pkgs.xdg-desktop-portal
+      pkgs.xdg-desktop-portal-hyprland
     ];
   };
 
@@ -103,6 +108,7 @@
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
+
   #sound.enable = true;
   services.flatpak.enable = true;
   services.blueman.enable = true;
@@ -166,7 +172,7 @@
 
   hardware.opengl = {
     enable = true;
-    #driSupport = true;
+    driSupport = true;
     #driSupport32Bit = true;
     extraPackages = with pkgs; [
       vulkan-loader
@@ -175,6 +181,8 @@
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
       intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       libvdpau-va-gl
+      vaapiVdpau
+      mesa.drivers
     ];
   };
 
