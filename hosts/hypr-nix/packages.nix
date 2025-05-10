@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, zen-browser, ... }:
 let
   unstable = import
     (builtins.fetchTarball "channel:nixos-unstable")
