@@ -11,6 +11,7 @@
   };
 
   home.packages = with pkgs; [
+    jdk8
 #    neovim
 #    firefox
 #    ripgrep
