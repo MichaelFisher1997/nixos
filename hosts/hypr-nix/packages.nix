@@ -1,9 +1,4 @@
 { config, pkgs, ... }:
-let
-  unstable = import
-    (builtins.fetchTarball "channel:nixos-unstable")
-    { config = config.nixpkgs.config; };
-in
 {
   environment.systemPackages = with pkgs; [
     # Text Editors
@@ -11,7 +6,6 @@ in
     sublime
     lunarvim
     vscode
-    #unstable.zed-editor
     
     # Development Tools
     openjdk
@@ -22,7 +16,7 @@ in
     glfw
     libGL
     SDL2
-    unstable.sdl3
+    sdl3
     SDL2_image
     vulkan-loader
     vulkan-tools
@@ -35,8 +29,8 @@ in
     php83Packages.composer
     exercism
     betterdiscord-installer
-    unstable.go
-    unstable.bun
+    go
+    bun
     air
     tailwindcss
     google-cloud-sdk-gce
@@ -109,7 +103,7 @@ in
     i3
     eww
     vesktop
-    unstable.hyprsunset
+    hyprsunset
     
     # Web Browsers
     brave
@@ -184,12 +178,12 @@ in
     svt-av1
     rav1e
     libaom
-    unstable.sunshine
+    sunshine
     
     # Miscellaneous
     fastfetch
     betterdiscord-installer
-    unstable.ghostty
+    ghostty
     guacamole-client
     rpi-imager
     light
