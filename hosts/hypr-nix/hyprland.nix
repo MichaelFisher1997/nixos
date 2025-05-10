@@ -35,7 +35,6 @@
     discocss
     themechanger
     catppuccin-kvantum
-    dolphin
     nwg-drawer
     hyprpaper
 	];

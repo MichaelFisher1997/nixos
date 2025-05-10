@@ -8,7 +8,6 @@ in
   environment.systemPackages = with pkgs; [
     # Text Editors
     vim
-    libsForQt5.kate
     sublime
     lunarvim
     vscode
@@ -34,7 +33,6 @@ in
     python3
     php
     php83Packages.composer
-    libsForQt5.kdenlive
     exercism
     betterdiscord-installer
     unstable.go
@@ -112,7 +110,6 @@ in
     eww
     vesktop
     unstable.hyprsunset
-    unstable.hyprshot
     
     # Web Browsers
     brave
@@ -180,7 +177,7 @@ in
     spice-vdagent
     
     # Themes and Customization
-    kdePackages.qt6ct
+    #kdePackages.qt6ct
     catppuccin-kvantum
     
     # Multimedia Tools
@@ -195,7 +192,6 @@ in
     unstable.ghostty
     guacamole-client
     rpi-imager
-    kdePackages.filelight
     light
 
     #games
@@ -214,6 +210,11 @@ in
     modrinth-app
     minecraft
     nsnake
+
+    #kdePackages
+    kdePackages.dolphin
+    kdePackages.filelight
+    kdePackages.kate
   ];
 
 }

@@ -61,7 +61,9 @@
 
   services = {
     # Enable X11 and configure Wayland support
-    desktopManager.plasma6 = true;
+    desktopManager = {
+      plasma6.enable = true;
+    };
     xserver = {
       enable = true;
       xkb.layout = "gb";
@@ -74,7 +76,6 @@
       # Desktop Managers Configuration
       desktopManager = {
         gnome.enable = true;       # GNOME
-        #plasma6.enable = true;     # Use plasma5 for KDE6 as well
       };
 
       # Window Managers Configuration
@@ -108,7 +109,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   #sound.enable = true;
   services.flatpak.enable = true;
@@ -170,22 +171,6 @@
   #hardware.system76.enableAll = true;
   #services.desktopManager.cosmic.enable = true;
   #services.displayManager.cosmic-greeter.enable = true;
-
-  hardware.opengl = {
-    enable = true;
-    #driSupport = true;
-    #driSupport32Bit = true;
-    extraPackages = with pkgs; [
-      vulkan-loader
-      vulkan-validation-layers
-      vulkan-extension-layer
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-      libvdpau-va-gl
-      vaapiVdpau
-      mesa
-    ];
-  };
 
   programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
