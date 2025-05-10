@@ -25,6 +25,12 @@
   boot.loader.grub.useOSProber = true;
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  nix.package = pkgs.nixVersions.latest;
+
+  # Optional but recommended:
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
   boot.kernelParams = [
     "cgroup_enable=cpuset,cpu,cpuacct,blkio,devices,freezer,net_cls,perf_event,net_prio,hugetlb,pids"
   ];

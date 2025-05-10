@@ -1,4 +1,9 @@
 { config, pkgs, ... }:
+let
+  unstable = import
+    (builtins.fetchTarball "channel:nixos-unstable")
+    { config = config.nixpkgs.config; };
+in
 {
   environment.systemPackages = with pkgs; [
     # Text Editors
