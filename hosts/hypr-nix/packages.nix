@@ -109,7 +109,6 @@
     brave
     google-chrome
     firefox
-    falkon
     tor-browser
     
     # Communication
@@ -209,6 +208,7 @@
     kdePackages.dolphin
     kdePackages.filelight
     kdePackages.kate
+    kdePackages.falkon
   ];
 
 }
