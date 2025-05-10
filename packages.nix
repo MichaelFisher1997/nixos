@@ -8,7 +8,6 @@ in
   environment.systemPackages = with pkgs; [
     # Text Editors
     vim
-    neovim
     libsForQt5.kate
     sublime
     lunarvim
@@ -38,7 +37,6 @@ in
     libsForQt5.kdenlive
     exercism
     betterdiscord-installer
-    unstable.nodejs_23
     unstable.go
     unstable.bun
     air
@@ -127,7 +125,7 @@ in
     discord
     webcord
     slack
-    telegram-desktop
+    #telegram-desktop
     
     # Media
     vlc
@@ -145,7 +143,6 @@ in
     bottles
     wine
     wine64
-    minecraft
     
     # Fonts
     noto-fonts-color-emoji
@@ -190,7 +187,7 @@ in
     svt-av1
     rav1e
     libaom
-    sunshine
+    unstable.sunshine
     
     # Miscellaneous
     fastfetch
@@ -199,7 +196,24 @@ in
     guacamole-client
     rpi-imager
     kdePackages.filelight
+    light
 
+    #games
+    flightgear
+    minetest
+    openttd
+    endless-sky
+    cataclysm-dda
+    xonotic
+    superTux
+    superTuxKart
+    airshipper
+    mindustry-wayland
+    speed_dreams
+    simutrans_binaries
+    modrinth-app
+    minecraft
+    nsnake
   ];
 
 }

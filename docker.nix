@@ -1,41 +1,28 @@
-{ pkgs, ... }:
-#let
-#  # When using easyCerts=true the IP Address must resolve to the master on creation.
-# # So use simply 127.0.0.1 in that case. Otherwise you will have errors like this https://github.com/NixOS/nixpkgs/issues/59364
-#  kubeMasterIP = "10.1.1.2";
-#  kubeMasterHostname = "api.kube";
-#  kubeMasterAPIServerPort = 6443;
-#in
+{ ... }:
+
 {
+  # Enable Docker program itself
   virtualisation.docker.enable = true;
-  virtualisation.docker.rootless = {
-  	enable = true;
-  	setSocketVariable = true;
+
+  # Create a socket to lazy-load Docker
+  systemd.sockets.docker = {
+    wantedBy = [ "sockets.target" ];
+    listenStreams = [ "/run/docker.sock" ];
+    socketConfig = {
+      SocketMode = "0660";
+      SocketUser = "root";
+      SocketGroup = "docker";
+    };
   };
-#  # resolve master hostname
-#  networking.extraHosts = "${kubeMasterIP} ${kubeMasterHostname}";
-#
-#  # packages for administration tasks
-#  environment.systemPackages = with pkgs; [
-#    kompose
-#    kubectl
-#    kubernetes
-#  ];
-#
-#  services.kubernetes = {
-#    roles = ["master" "node"];
-#    masterAddress = kubeMasterHostname;
-#    apiserverAddress = "https://${kubeMasterHostname}:${toString kubeMasterAPIServerPort}";
-#    easyCerts = true;
-#    apiserver = {
-#      securePort = kubeMasterAPIServerPort;
-#      advertiseAddress = kubeMasterIP;
-#    };
-#
-#    # use coredns
-#    addons.dns.enable = true;
-#
-#    # needed if you use swap
-#    kubelet.extraOpts = "--fail-swap-on=false";
-#  };
+
+  # Override the Docker service to disable autostart
+  systemd.services.docker = {
+    enable = false;
+    wants = [ "docker.socket" ];
+    after = [ "docker.socket" ];
+    serviceConfig = {
+      ExecStartPre = "-/usr/bin/rm -f /run/docker.sock";
+    };
+  };
 }
+
