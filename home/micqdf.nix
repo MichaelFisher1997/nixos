@@ -5,10 +5,10 @@
 
   programs.fish.enable = true;
 
-  programs.git = {
-    enable = true;
-    userName = "MichaelFisher1997";
-  };
+  #programs.git = {
+  #  enable = true;
+  #  userName = "MichaelFisher1997";
+  #};
 
   home.packages = with pkgs; [
     jdk8
