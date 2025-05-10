@@ -61,6 +61,7 @@
 
   services = {
     # Enable X11 and configure Wayland support
+    desktopManager.plasma6 = true;
     xserver = {
       enable = true;
       xkb.layout = "gb";
@@ -73,7 +74,7 @@
       # Desktop Managers Configuration
       desktopManager = {
         gnome.enable = true;       # GNOME
-        plasma6.enable = true;     # Use plasma5 for KDE6 as well
+        #plasma6.enable = true;     # Use plasma5 for KDE6 as well
       };
 
       # Window Managers Configuration
@@ -182,7 +183,7 @@
       intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       libvdpau-va-gl
       vaapiVdpau
-      mesa.drivers
+      mesa
     ];
   };
 
