@@ -15,9 +15,7 @@
     glew
     glfw
     libGL
-    SDL2
     sdl3
-    SDL2_image
     vulkan-loader
     vulkan-tools
     vulkan-headers
