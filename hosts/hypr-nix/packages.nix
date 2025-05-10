@@ -6,6 +6,8 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
+    #flakes
+    zen-browser.packages."${system}".twilight
     # Text Editors
     vim
     sublime

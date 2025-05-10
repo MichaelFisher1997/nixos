@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
   home.stateVersion = "24.11";
@@ -11,10 +11,10 @@
   };
 
   home.packages = with pkgs; [
-    neovim
-    firefox
-    ripgrep
-    zen-browser.packages.${pkgs.system}.twilight
+#    neovim
+#    firefox
+#    ripgrep
+    #zen-browser.packages.${pkgs.system}.twilight
     #zen-browser.packages."${system}".twilight
   ];
 }
