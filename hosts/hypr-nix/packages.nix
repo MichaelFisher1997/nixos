@@ -52,6 +52,7 @@ in
     alacritty
     
     # Shell Utilities
+    home-manager
     fish
     zsh
     curl

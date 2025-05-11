@@ -15,7 +15,6 @@
       ./networking.nix
       ./gpu.nix
       ./sunshine.nix
-      ./home-manager.nix
       #./i3.nix
     ];
     
