@@ -108,6 +108,12 @@
       pkgs.xdg-desktop-portal-hyprland
     ];
   };
+  #xdg.portal = {
+  #  enable = true;
+  #  hyprland.enable = true;
+  #  extraPortals = [ "gtk" ]; # Optional, for GTK apps support
+  #};
+
   # Configure console keymap
   console.keyMap = "uk";
 

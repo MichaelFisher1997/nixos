@@ -119,7 +119,6 @@ in
     # Media
     vlc
     simplescreenrecorder
-    obs-studio
     davinci-resolve-studio
     audacity
     haruna
