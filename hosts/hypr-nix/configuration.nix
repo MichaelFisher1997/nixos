@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./packages.nix
       ./mnt.nix
@@ -17,7 +18,7 @@
       ./sunshine.nix
       #./i3.nix
     ];
-    
+
 
   # Bootloader.
   boot.loader.grub.enable = true;
@@ -38,10 +39,10 @@
   services.zfs.autoScrub.enable = true;
   services.zfs.trim.enable = true;
 
-#  boot.supportedFilesystems = [ "zfs" ];
-#  boot.zfs.forceImportRoot = false;
-#  networking.hostId = "a44f5fde";
-#  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  #  boot.supportedFilesystems = [ "zfs" ];
+  #  boot.zfs.forceImportRoot = false;
+  #  networking.hostId = "a44f5fde";
+  #  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -74,14 +75,14 @@
       enable = true;
       xkb.layout = "gb";
       xkb.variant = "";
-      videoDrivers = ["amdgpu"];
+      videoDrivers = [ "amdgpu" ];
 
       # Enable GDM as the display manager
       displayManager.gdm.enable = true;
 
       # Desktop Managers Configuration
       desktopManager = {
-        gnome.enable = true;       # GNOME
+        gnome.enable = true; # GNOME
       };
 
       # Window Managers Configuration
@@ -107,7 +108,6 @@
       pkgs.xdg-desktop-portal-hyprland
     ];
   };
-
   # Configure console keymap
   console.keyMap = "uk";
 
@@ -139,11 +139,11 @@
   users.users.micqdf = {
     isNormalUser = true;
     description = "micqdf";
-    extraGroups = [ "networkmanager" "wheel" "docker"];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
   };
- # environment.systemPackages = [
- #   pkgs.home-manager
- # ];
+  # environment.systemPackages = [
+  #   pkgs.home-manager
+  # ];
 
   # Install programs config
   programs.java.enable = true;
@@ -155,12 +155,15 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-33.4.11"
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-    #nixpkgs.overlays = [
-    #  (import ./godot4-overlay.nix)
-    #];
+  #nixpkgs.overlays = [
+  #  (import ./godot4-overlay.nix)
+  #];
 
   #hardware.opengl.driSupport = true; # This is already enabled by default
   hardware.bluetooth.enable = true; # enables support for Bluetooth
@@ -179,14 +182,14 @@
   programs.steam.gamescopeSession.enable = true;
 
   programs.gamemode.enable = true;
-    programs.ssh.askPassword = lib.mkForce "/nix/store/qjl45ra2yaqn88h6s9f7b79zpja9dy8b-seahorse-43.0/libexec/seahorse/ssh-askpass";
+  programs.ssh.askPassword = lib.mkForce "/nix/store/qjl45ra2yaqn88h6s9f7b79zpja9dy8b-seahorse-43.0/libexec/seahorse/ssh-askpass";
 
-#  # List services that you want to enable:
-#  environment.sessionVariables = {
-#  	STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/micqdf/.steam/root/compatibilitytools.d";
-#  	hyprshot = "/home/micqdf/flakes/hyprshot/Hyprshot";
-#  };
-#
+  #  # List services that you want to enable:
+  #  environment.sessionVariables = {
+  #  	STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/micqdf/.steam/root/compatibilitytools.d";
+  #  	hyprshot = "/home/micqdf/flakes/hyprshot/Hyprshot";
+  #  };
+  #
   security.polkit.enable = true;
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

@@ -9,9 +9,7 @@ in
     #flakes
     zen-browser.packages."${system}".twilight
     # Text Editors
-    vim
     sublime
-    lunarvim
     vscode
     
     # Development Tools
@@ -27,14 +25,11 @@ in
     vulkan-tools
     vulkan-headers
     wayland-protocols
-    golangci-lint
-    golangci-lint-langserver
     python3
     php
     php83Packages.composer
     exercism
     betterdiscord-installer
-    go
     bun
     air
     tailwindcss
@@ -53,8 +48,6 @@ in
     
     # Shell Utilities
     home-manager
-    fish
-    zsh
     curl
     wget
     tree
@@ -141,6 +134,7 @@ in
     wine64
     
     # Fonts
+		noto-fonts
     noto-fonts-color-emoji
     twemoji-color-font
     catppuccin-kvantum
@@ -195,7 +189,7 @@ in
 
     #games
     flightgear
-    minetest
+#    unstable.luanti
     openttd
     endless-sky
     cataclysm-dda
@@ -206,7 +200,7 @@ in
     mindustry-wayland
     speed_dreams
     simutrans_binaries
-    modrinth-app
+    #modrinth-app
     minecraft
     nsnake
 

@@ -17,7 +17,7 @@
 
   # Override the Docker service to disable autostart
   systemd.services.docker = {
-    enable = false;
+    enable = true;
     wants = [ "docker.socket" ];
     after = [ "docker.socket" ];
     serviceConfig = {
