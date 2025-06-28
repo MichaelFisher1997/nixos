@@ -104,10 +104,15 @@
   # XDG Portals Configuration for Wayland
   xdg.portal = {
     enable = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-hyprland
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
     ];
+    config.common.default = ["hyprland"];
   };
+  
+  # Disable GNOME desktop services that might conflict
+  services.gnome.gnome-keyring.enable = false;
+  services.gnome.gnome-online-accounts.enable = false;
   #xdg.portal = {
   #  enable = true;
   #  hyprland.enable = true;
