@@ -47,9 +47,6 @@ in
     minikube
     terraform
     helm
-    pulumi
-    pulumiPackages.pulumi-go
-    pulumiPackages.pulumi-aws-native
     awscli2
     sqlite
     postgresql
