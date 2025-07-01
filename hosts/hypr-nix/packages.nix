@@ -8,206 +8,109 @@ in
   environment.systemPackages = with pkgs; [
     #flakes
     zen-browser.packages."${system}".twilight
-    # Text Editors
-    sublime
-    vscode
-    
-    # Development Tools
+    # Core Languages & Runtimes (that need to be global)
     openjdk
-    clang-tools
-    gcc
-    cmake
-    glew
-    glfw
-    libGL
-    sdl3
-    vulkan-loader
-    vulkan-tools
-    vulkan-headers
-    wayland-protocols
-    python3
-    php
-    php83Packages.composer
-    exercism
-    betterdiscord-installer
-    bun
-    air
-    tailwindcss
-    google-cloud-sdk-gce
-    kubo
-    hashcat
-    
-    # Version Control
-    git
-    git-lfs
-    nix-prefetch-git
-    
-    # Terminals
-    kitty
-    alacritty
-    
-    # Shell Utilities
-    home-manager
+
+    # Nix & Nix tools
+    nixpkgs-fmt
+    nixpkgs-review
+    nurl
+
+    # Core CLI & Networking Tools
     curl
     wget
     tree
     fd
-    fzf
     bat
-    thefuck
-    tmux
-    zellij
-    lolcat
     lsd
     tldr
-    
-    # File Management
-    ranger
-    _7zz
-    unrar
-    zip
-    unzip
-    gzip
-    gvfs
+
+    # File systems, Mounts, Partitions
     btrfs-progs
     nfs-utils
     ntfs3g
-    
-    # System Utilities
-    htop
-    vault
-    btop
-    amdgpu_top
+    gvfs
     parted
     gparted
-    xorg.xprop
-    xorg.xkill
-    calc
-    maim
-    xclip
-    xdotool
-    networkmanager_dmenu
-    virt-manager
-    networkmanagerapplet
-    polybarFull
-    picom
-    arandr
-    nitrogen
-    pywal
+    gptfdisk
     ldmtool
     smartmontools
-    gptfdisk
-    
-    # Window Managers
-    i3
-    eww
-    vesktop
-    hyprsunset
-    
-    # Web Browsers
-    brave
-    google-chrome
-    firefox
-    tor-browser
-    
-    # Communication
-    discord
-    webcord
-    slack
-    #telegram-desktop
-    
-    # Media
-    vlc
-    simplescreenrecorder
-    davinci-resolve-studio
-    audacity
-    haruna
-    
-    # Gaming
-    mangohud
-    protonup
-    protontricks
-    lutris
-    bottles
-    wine
-    wine64
-    
-    # Fonts
-		noto-fonts
-    noto-fonts-color-emoji
-    twemoji-color-font
-    catppuccin-kvantum
-    themechanger
-    
-    # Backup and Recovery
-    pika-backup
-    megasync
-    
-    # Networking
-    ngrok
-    ipmitool
+
+    # Network & VPN
     tailscale
-    remmina
-    ddev
-    
-    # Containers and Virtualization
+    ipmitool
+
+    # Containers & Virtualization
     docker
     docker-compose
     kubectl
-    terraform
     minikube
-    
-    # Security
+    terraform
+    helm
+    pulumi
+    pulumiPackages.pulumi-go
+    pulumiPackages.pulumi-aws-native
+    awscli2
+    sqlite
+    postgresql
+    virt-manager
+
+    # System monitoring
+    htop
+    btop
+    amdgpu_top
+
+    # Xorg/WM system utils
+    xorg.xprop
+    xorg.xkill
+
+    # Login/session management
+    networkmanagerapplet
+    networkmanager_dmenu
+
+    # System Security
+    vault
     onlyoffice-bin
     rcon
     rconc
     monero-gui
-    
-    # Graphics
+
+    # Spice/QEMU/VM graphics
     spice
     spice-gtk
     spice-vdagent
-    
-    # Themes and Customization
-    #kdePackages.qt6ct
-    catppuccin-kvantum
-    
-    # Multimedia Tools
-    svt-av1
-    rav1e
-    libaom
-    sunshine
-    
-    # Miscellaneous
-    fastfetch
-    betterdiscord-installer
-    ghostty
-    guacamole-client
+
+    # KDE core system apps (for Plasma systems)
+    kdePackages.dolphin
+    kdePackages.filelight
+
+    # ddev (if used for multiple users/projects)
+    ddev
+
+    # Misc System
+    calc
     rpi-imager
     light
 
-    #games
-    flightgear
-#    unstable.luanti
-    openttd
-    endless-sky
-    cataclysm-dda
-    xonotic
-    superTux
-    superTuxKart
-    airshipper
-    mindustry-wayland
-    speed_dreams
-    simutrans_binaries
-    #modrinth-app
-    minecraft
-    nsnake
+    # Games & GPU/driver helpers (if system-wide needed)
+    mangohud
 
-    #kdePackages
-    kdePackages.dolphin
-    kdePackages.filelight
-    kdePackages.kate
-    kdePackages.falkon
+    # Google Cloud tools (system use)
+    google-cloud-sdk-gce
+    kubo
+
+    # Backup/recovery (system-wide, headless or cron use)
+    megasync
+
+    # Misc/other core system-wide apps
+    betterdiscord-installer # if you want it everywhere
+    air # if needed globally
+
+    # Themes and customization (for display manager, greeter, or global theming)
+    catppuccin-kvantum
+    themechanger
+
+
   ];
 
 }

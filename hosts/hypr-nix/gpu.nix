@@ -2,7 +2,16 @@
 {
   environment.systemPackages = [
     pkgs.rocmPackages.rpp
-	];
+  ];
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+    extraPackages = with pkgs; [
+      mesa.drivers
+    ];
+  };
+
   hardware.graphics = {
     enable = true;
     #driSupport = true;

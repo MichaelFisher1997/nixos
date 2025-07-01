@@ -1,7 +1,7 @@
 #this might be redundent 
-{config, pkgs, callPackage, ... }:
+{ config, pkgs, callPackage, ... }:
 {
- services.xserver = {
+  services.xserver = {
     enable = true;
 
     desktopManager = {
@@ -16,7 +16,7 @@
         i3lock #default i3 screen locker
         i3blocks #if you are planning on using i3blocks over i3status
         picom
-     ];
+      ];
     };
   };
 }

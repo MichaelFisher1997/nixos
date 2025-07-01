@@ -101,23 +101,9 @@
     };
   };
 
-  # XDG Portals Configuration for Wayland
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland
-    ];
-    config.common.default = ["hyprland"];
-  };
-  
   # Disable GNOME desktop services that might conflict
-  services.gnome.gnome-keyring.enable = false;
-  services.gnome.gnome-online-accounts.enable = false;
-  #xdg.portal = {
-  #  enable = true;
-  #  hyprland.enable = true;
-  #  extraPortals = [ "gtk" ]; # Optional, for GTK apps support
-  #};
+  services.gnome.gnome-keyring.enable = lib.mkForce false;
+  services.gnome.gnome-online-accounts.enable = lib.mkForce false;
 
   # Configure console keymap
   console.keyMap = "uk";
@@ -152,29 +138,17 @@
     description = "micqdf";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
   };
-  # environment.systemPackages = [
-  #   pkgs.home-manager
-  # ];
 
   # Install programs config
   programs.java.enable = true;
   programs.sway.enable = true;
 
 
-  programs.fish.enable = true;
-  users.defaultUserShell = pkgs.fish;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
     "electron-33.4.11"
   ];
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  #nixpkgs.overlays = [
-  #  (import ./godot4-overlay.nix)
-  #];
 
   #hardware.opengl.driSupport = true; # This is already enabled by default
   hardware.bluetooth.enable = true; # enables support for Bluetooth
@@ -184,23 +158,8 @@
       Enable = "Source,Sink,Media,Socket";
     };
   };
-  #cosmic
-  #hardware.system76.enableAll = true;
-  #services.desktopManager.cosmic.enable = true;
-  #services.displayManager.cosmic-greeter.enable = true;
-
-  programs.steam.enable = true;
-  programs.steam.gamescopeSession.enable = true;
-
-  programs.gamemode.enable = true;
   programs.ssh.askPassword = lib.mkForce "/nix/store/qjl45ra2yaqn88h6s9f7b79zpja9dy8b-seahorse-43.0/libexec/seahorse/ssh-askpass";
 
-  #  # List services that you want to enable:
-  #  environment.sessionVariables = {
-  #  	STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/micqdf/.steam/root/compatibilitytools.d";
-  #  	hyprshot = "/home/micqdf/flakes/hyprshot/Hyprshot";
-  #  };
-  #
   security.polkit.enable = true;
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -212,12 +171,6 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = false;

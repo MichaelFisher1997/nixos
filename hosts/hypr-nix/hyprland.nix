@@ -1,13 +1,13 @@
 { pkgs, ... }:
 {
   programs.hyprland = {
-		enable = true;
-		# package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-		xwayland.enable = true;
-	};
+    enable = true;
+    # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    xwayland.enable = true;
+  };
 
   environment.systemPackages = with pkgs; [
-		waypaper
+    waypaper
     wl-clipboard
     blueman
     rofi-wayland
@@ -37,11 +37,11 @@
     catppuccin-kvantum
     nwg-drawer
     hyprpaper
-	];
+  ];
 
   programs.thunar.enable = true;
   programs.thunar.plugins = with pkgs.xfce; [
-  	thunar-archive-plugin
-  	thunar-volman
+    thunar-archive-plugin
+    thunar-volman
   ];
 }
