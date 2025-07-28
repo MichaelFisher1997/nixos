@@ -3,12 +3,7 @@
   environment.systemPackages = [
     pkgs.rocmPackages.rpp
   ];
-  hardware.opengl = {
-    enable = true;
-    extraPackages = with pkgs; [
-      mesa.drivers
-    ];
-  };
+  # Removed deprecated hardware.opengl - already configured in hardware.graphics below
 
   hardware.graphics = {
     enable = true;
@@ -19,8 +14,7 @@
       vulkan-loader
       vulkan-validation-layers
       vulkan-extension-layer
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      # Intel drivers removed - AMD system only
       libvdpau-va-gl
       vaapiVdpau
       mesa

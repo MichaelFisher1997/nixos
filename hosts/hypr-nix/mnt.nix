@@ -23,8 +23,9 @@
     fsType = "btrfs";
     options = [ "compress=zstd" "nofail" "x-systemd.device-timeout=5s" ];
   };
-  fileSystems."/mnt/ssd2" = {
-    device = "/dev/disk/by-uuid/bc0d1423-5682-4150-906f-b1a154a316ea";
-    fsType = "btrfs";
-  };
+  # fileSystems."/mnt/ssd2" = {
+  #   device = "/dev/disk/by-uuid/bc0d1423-5682-4150-906f-b1a154a316ea";
+  #   fsType = "btrfs";
+  #   options = [ "nofail" "x-systemd.device-timeout=5s" ];
+  # };
 }

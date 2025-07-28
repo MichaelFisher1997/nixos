@@ -21,9 +21,8 @@
 
 
   # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/nvme0n1";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   nix.package = pkgs.nixVersions.latest;
@@ -158,7 +157,8 @@
       Enable = "Source,Sink,Media,Socket";
     };
   };
-  programs.ssh.askPassword = lib.mkForce "/nix/store/qjl45ra2yaqn88h6s9f7b79zpja9dy8b-seahorse-43.0/libexec/seahorse/ssh-askpass";
+  # Use KDE's SSH askpass to resolve conflict
+  programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
 
   security.polkit.enable = true;
   # Enable the OpenSSH daemon.
