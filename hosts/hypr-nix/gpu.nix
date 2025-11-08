@@ -7,8 +7,7 @@
 
   hardware.graphics = {
     enable = true;
-    #driSupport = true;
-    #driSupport32Bit = true;
+    enable32Bit = true;
     extraPackages = with pkgs; [
       rocmPackages.clr.icd
       vulkan-loader
@@ -18,6 +17,13 @@
       libvdpau-va-gl
       vaapiVdpau
       mesa
+      mesa.drivers
     ];
+  };
+
+  # Environment variables for proper GBM backend
+  environment.sessionVariables = {
+    GBM_BACKEND = "mesa";
+    MESA_LOADER_DRIVER_OVERRIDE = "radeonsi";
   };
 }

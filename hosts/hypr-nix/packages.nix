@@ -46,8 +46,8 @@ in
     kubectl
     minikube
     terraform
-    helm
     awscli2
+		kubernetes-helm
     sqlite
     postgresql
     virt-manager
@@ -89,8 +89,10 @@ in
     rpi-imager
     light
 
-    # Games & GPU/driver helpers (if system-wide needed)
-    mangohud
+     # Games & GPU/driver helpers (if system-wide needed)
+     protonup-qt
+    protonup-ng
+    gamescope
 
     # Google Cloud tools (system use)
     google-cloud-sdk-gce
