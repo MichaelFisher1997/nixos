@@ -1,10 +1,7 @@
-{ ... }:
-
+{ lib, ... }:
 {
-  # Enable Docker program itself
   virtualisation.docker.enable = true;
 
-  # Create a socket to lazy-load Docker
   systemd.sockets.docker = {
     wantedBy = [ "sockets.target" ];
     listenStreams = [ "/run/docker.sock" ];
@@ -15,14 +12,13 @@
     };
   };
 
-  # Override the Docker service to disable autostart
   systemd.services.docker = {
     enable = true;
     wants = [ "docker.socket" ];
     after = [ "docker.socket" ];
+    wantedBy = lib.mkForce [];
     serviceConfig = {
       ExecStartPre = "-/usr/bin/rm -f /run/docker.sock";
     };
   };
 }
-

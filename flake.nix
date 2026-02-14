@@ -1,9 +1,9 @@
 {
-  description = "NixOS configuration for hypr-nix with zen-browser";
+  description = "NixOS configuration for hypr-nix";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -11,19 +11,22 @@
     };
   };
 
-  outputs = { self, nixpkgs, zen-browser, ... }: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, zen-browser, ... }:
+  let
+    vars = import ./hosts/hypr-nix/vars.nix;
+  in {
     nixosConfigurations.hypr-nix = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
 
       modules = [
-        ./hosts/hypr-nix/configuration.nix
-
+        ./hosts/hypr-nix/default.nix
       ];
 
       specialArgs = {
-        zen-browser = zen-browser;
+        inherit vars;
+        inherit zen-browser;
+        unstable = nixpkgs-unstable;
       };
     };
   };
 }
-

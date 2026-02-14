@@ -1,10 +1,13 @@
-{ lib, pkgs, ... }:
+{ pkgs, vars, lib, ... }:
 {
   networking = {
-    hostName = "hypr-nix";
+    hostName = vars.hostName;
+    networkmanager = {
+      enable = true;
+      unmanaged = [ "docker0" "br-*" "veth*" "tailscale0" ];
+    };
+    dhcpcd.enable = false;
   };
-
-  networking.networkmanager.unmanaged = [ "docker0" "br-*" "veth*" "tailscale0" ];
 
   environment.etc."NetworkManager/conf.d/10-globally-managed-devices.conf" = {
     text = ''
@@ -27,6 +30,9 @@
       RemainAfterExit = true;
     };
   };
+
+  systemd.services.NetworkManager-wait-online.enable = false;
+
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 47984 47989 47990 48010 ];
@@ -35,6 +41,6 @@
       { from = 8000; to = 8010; }
     ];
   };
+
   services.tailscale.enable = true;
-  systemd.services.NetworkManager-wait-online.enable = false;
 }
