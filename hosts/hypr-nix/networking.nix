@@ -1,11 +1,30 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
   networking = {
     hostName = "hypr-nix";
-    useDHCP = lib.mkDefault true;
+  };
 
-    interfaces = {
-      enp0s31f6.useDHCP = true;
+  networking.networkmanager.unmanaged = [ "docker0" "br-*" "veth*" "tailscale0" ];
+
+  environment.etc."NetworkManager/conf.d/10-globally-managed-devices.conf" = {
+    text = ''
+      [keyfile]
+      unmanaged-devices=*,except:type:ethernet,except:type:wifi,except:type:wwan
+    '';
+  };
+
+  systemd.services.ensure-ethernet-managed = {
+    description = "Ensure ethernet devices are managed by NetworkManager";
+    after = [ "NetworkManager.service" ];
+    wants = [ "NetworkManager.service" ];
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.networkmanager ];
+    script = ''
+      nmcli device set enp8s0 managed yes || true
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
     };
   };
   networking.firewall = {

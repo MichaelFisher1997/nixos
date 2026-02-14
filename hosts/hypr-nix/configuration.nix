@@ -34,11 +34,32 @@
   '';
   boot.kernelParams = [
     "cgroup_enable=cpuset,cpu,cpuacct,blkio,devices,freezer,net_cls,perf_event,net_prio,hugetlb,pids"
-    "usbcore.old_scheme_first=1"  # Fix for older USB devices on newer controllers
+    "usbcore.old_scheme_first=1"
+    "amd_pstate=active"
+    "split_lock_detect=off"
+    "nowatchdog"
   ];
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 10;
+    "vm.vfs_cache_pressure" = 50;
+    "vm.dirty_ratio" = 3;
+    "vm.dirty_background_ratio" = 1;
+    "kernel.perf_event_paranoid" = 1;
+    "kernel.sched_cfs_bandwidth_slice_us" = 3000;
+    "net.core.netdev_max_backlog" = 30000;
+  };
   boot.supportedFilesystems = [ "ntfs" ];
   services.zfs.autoScrub.enable = true;
   services.zfs.trim.enable = true;
+
+  systemd.oomd = {
+    enable = true;
+    enableRootSlice = true;
+    enableUserSlices = true;
+    extraConfig = {
+      DefaultMemoryPressureDurationSec = "5s";
+    };
+  };
 
   #  boot.supportedFilesystems = [ "zfs" ];
   #  boot.zfs.forceImportRoot = false;
@@ -69,11 +90,16 @@
   };
 
   services = {
-    # Enable X11 and configure Wayland support
+    earlyoom = {
+      enable = true;
+      freeMemThreshold = 5;
+      freeSwapThreshold = 10;
+      enableNotifications = true;
+    };
+
     desktopManager = {
       plasma6 = {
-        enable = true;
-        enableQt5Integration = false; # Fix KDE logout hanging issue
+        enable = false;
       };
     };
     xserver = {
@@ -106,21 +132,23 @@
     };
   };
 
-  # Disable GNOME desktop services that might conflict
   services.gnome.gnome-keyring.enable = true;
   services.gnome.gnome-online-accounts.enable = lib.mkForce false;
-  
-  # Additional KDE logout fixes
-  services.xserver.desktopManager.plasma6.notoPackage = pkgs.noto-fonts;
+  services.gnome.gnome-browser-connector.enable = false;
   environment.sessionVariables = {
     KWIN_DRM_NO_AMS = "1";
     MANGOHUD = "1";
   };
 
-  # Add swap file to prevent system freezing at high memory usage
   swapDevices = [ 
-    { device = "/swapfile"; size = 16384; } # 16GB swap file
+    { device = "/swapfile"; size = 16384; }
   ];
+
+  # zramSwap = {
+  #   enable = false;  # Disabled - conflicting with swapfile
+  # };
+
+  virtualisation.waydroid.enable = false;
 
   # Configure console keymap
   console.keyMap = "uk";
@@ -132,7 +160,7 @@
   services.flatpak.enable = true;
   services.blueman.enable = true;
   security.rtkit.enable = true;
-  services.gvfs.enable = true;
+  services.gvfs.enable = lib.mkForce false;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -144,6 +172,16 @@
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
+
+    # Low-latency audio configuration (safer settings to prevent crackling)
+    extraConfig.pipewire."92-low-latency" = {
+      context.properties = {
+        default.clock.rate = 48000;
+        default.clock.quantum = 512;      # ~10.7ms latency (safer)
+        default.clock.min-quantum = 256;  # Minimum buffer size
+        default.clock.max-quantum = 1024; # Maximum buffer size for stability
+      };
+    };
   };
 
 
@@ -157,6 +195,23 @@
         bluez5.headset-roles = [ ]
         bluez5.hfphsp-backend = "none"
       }
+    '')
+    # Disable audio suspension to prevent startup delays
+    (writeTextDir "wireplumber/wireplumber.conf.d/60-no-suspend.conf" ''
+      monitor.alsa.rules = [
+        {
+          matches = [
+            { node.name = "~alsa_input.*" }
+            { node.name = "~alsa_output.*" }
+            { node.name = "~bluez_*" }
+          ]
+          actions = {
+            update-props = {
+              session.suspend-timeout-seconds = 0
+            }
+          }
+        }
+      ]
     '')
   ];
 
@@ -207,6 +262,18 @@ programs.steam = {
     gamescopeSession.enable = true;
   };
 
+  programs.gamemode = {
+    enable = true;
+    settings = {
+      general = {
+        renice = 10;
+        desiredgov = "performance";
+        softrealtime = "off";
+        inhibit_screensaver = 1;
+      };
+    };
+  };
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
@@ -237,8 +304,9 @@ programs.steam = {
   # Auto-connect Bluetooth headset after boot
   systemd.user.services.bluetooth-headset-autoconnect = {
     description = "Auto-connect Bluetooth headset after boot";
-    after = [ "bluetooth.target" "pulseaudio.service" "pipewire.service" ];
+    after = [ "bluetooth.target" "pipewire.service" ];
     wants = [ "bluetooth.target" ];
+    wantedBy = [ "default.target" ];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${pkgs.bluez}/bin/bluetoothctl connect 41:42:32:63:0D:E8";
@@ -265,5 +333,28 @@ programs.steam = {
   system.stateVersion = "24.11"; # Did you read the comment?
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = false;
+
+  # Faster shutdown - reduce timeout for services
+  systemd.extraConfig = ''
+    DefaultTimeoutStopSec=15s
+  '';
+
+  # Ensure swap deactivates cleanly before unmount
+  systemd.services.swap-off = {
+    description = "Turn off swap before shutdown";
+    wantedBy = [ "shutdown.target" ];
+    before = [ "umount.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.util-linux}/bin/swapoff -a";
+      RemainAfterExit = true;
+    };
+  };
+
+  # Make Docker start on-demand instead of at boot
+  systemd.services.docker.wantedBy = lib.mkForce [];
+
+  # Gaming performance optimizations
+  powerManagement.cpuFreqGovernor = "performance";
 
 }
