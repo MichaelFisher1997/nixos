@@ -5,6 +5,10 @@
     remotePlay.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
     gamescopeSession.enable = true;
+    # Add Proton-GE for better NixOS compatibility
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
   };
 
   programs.gamemode = {
@@ -21,7 +25,6 @@
 
   environment.systemPackages = with pkgs; [
     protonup-qt
-    protonup-ng
     gamescope
   ];
 }

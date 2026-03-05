@@ -1,21 +1,21 @@
 { lib, pkgs, ... }:
 {
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.11";
   
   system.autoUpgrade = {
-    enable = true;
+    enable = false;
     allowReboot = false;
   };
 
-  systemd.extraConfig = ''
-    DefaultTimeoutStopSec=15s
-  '';
+  systemd.settings.Manager = {
+    DefaultTimeoutStopSec = "15s";
+  };
 
   systemd.oomd = {
     enable = true;
     enableRootSlice = true;
     enableUserSlices = true;
-    extraConfig = {
+    settings.OOM = {
       DefaultMemoryPressureDurationSec = "5s";
     };
   };
