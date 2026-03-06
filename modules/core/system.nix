@@ -7,15 +7,15 @@
     allowReboot = false;
   };
 
-  systemd.settings.Manager = {
-    DefaultTimeoutStopSec = "15s";
-  };
+  systemd.extraConfig = ''
+    DefaultTimeoutStopSec=15s
+  '';
 
   systemd.oomd = {
     enable = true;
     enableRootSlice = true;
     enableUserSlices = true;
-    settings.OOM = {
+    extraConfig = {
       DefaultMemoryPressureDurationSec = "5s";
     };
   };
