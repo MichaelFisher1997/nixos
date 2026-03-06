@@ -8,6 +8,7 @@
     ../../modules/core/users.nix
     ../../modules/core/locale.nix
     ../../modules/core/system.nix
+    ../../modules/core/fonts.nix
 
     ../../modules/desktop/gnome.nix
     ../../modules/desktop/hyprland.nix
