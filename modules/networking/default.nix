@@ -1,4 +1,4 @@
-{ pkgs, vars, lib, ... }:
+{ pkgs, vars, lib, unstable, ... }:
 {
   networking = {
     hostName = vars.hostName;
@@ -42,5 +42,8 @@
     ];
   };
 
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    package = unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.tailscale;
+  };
 }
