@@ -5,11 +5,10 @@
     xkb.layout = "gb";
     xkb.variant = "";
     videoDrivers = [ "amdgpu" ];
-
-    displayManager.gdm.enable = true;
-
-    desktopManager.gnome.enable = true;
   };
+
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   services.gnome = {
     gnome-keyring.enable = true;

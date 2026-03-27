@@ -19,13 +19,16 @@
     "amd_pstate=active"
     "split_lock_detect=off"
     "nowatchdog"
+    "elevator=none"
   ];
 
   boot.kernel.sysctl = {
     "vm.swappiness" = 10;
     "vm.vfs_cache_pressure" = 50;
-    "vm.dirty_ratio" = 3;
-    "vm.dirty_background_ratio" = 1;
+    "vm.dirty_ratio" = 10;
+    "vm.dirty_background_ratio" = 3;
+    "vm.dirty_expire_centisecs" = 300;
+    "vm.dirty_writeback_centisecs" = 100;
     "kernel.perf_event_paranoid" = 1;
     "kernel.sched_cfs_bandwidth_slice_us" = 3000;
     "net.core.netdev_max_backlog" = 30000;

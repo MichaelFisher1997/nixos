@@ -10,7 +10,7 @@
     extraConfig.pipewire."92-low-latency" = {
       context.properties = {
         default.clock.rate = 48000;
-        default.clock.quantum = 512;
+        default.clock.quantum = 256;
         default.clock.min-quantum = 256;
         default.clock.max-quantum = 1024;
       };
@@ -18,14 +18,6 @@
   };
 
   services.pipewire.wireplumber.configPackages = with pkgs; [
-    (writeTextDir "wireplumber/wireplumber.conf.d/50-bluetooth-policy.conf" ''
-      monitor.bluez.properties = {
-        bluez5.auto-switch-profile = [ "off" ]
-        bluez5.prefer-a2dp = true
-        bluez5.headset-roles = [ ]
-        bluez5.hfphsp-backend = "none"
-      }
-    '')
     (writeTextDir "wireplumber/wireplumber.conf.d/60-no-suspend.conf" ''
       monitor.alsa.rules = [
         {

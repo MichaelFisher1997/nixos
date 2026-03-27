@@ -29,7 +29,7 @@
   fileSystems."/mnt/ssd2" = {
     device = "/dev/disk/by-uuid/${vars.mounts.ssd2Uuid}";
     fsType = "btrfs";
-    options = [ "nofail" "x-systemd.device-timeout=5s" ];
+    options = [ "noatime" "compress=zstd" "discard=async" "nofail" "x-systemd.device-timeout=5s" ];
   };
 
   systemd.services.flatpak-nfs-workaround = {

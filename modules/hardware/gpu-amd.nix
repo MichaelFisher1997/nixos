@@ -10,14 +10,12 @@
       vulkan-validation-layers
       vulkan-extension-layer
       libvdpau-va-gl
-      vaapiVdpau
+      libva-vdpau-driver
       mesa
-      mesa.drivers
     ];
   };
 
   environment.sessionVariables = {
-    GBM_BACKEND = "mesa";
     MESA_LOADER_DRIVER_OVERRIDE = "radeonsi";
   };
 }
