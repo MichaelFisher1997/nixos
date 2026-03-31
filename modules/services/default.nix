@@ -23,5 +23,6 @@
 
   programs.java.enable = true;
   programs.nix-ld.enable = true;
-  programs.sway.enable = true;
+
+  services.fwupd.enable = true;
 }

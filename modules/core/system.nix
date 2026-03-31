@@ -31,9 +31,21 @@
     };
   };
 
-  swapDevices = [ 
+  swapDevices = [
     { device = "/swapfile"; size = 16384; }
   ];
+
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
+    priority = 999;
+  };
+
+  services.fstrim = {
+    enable = true;
+    interval = "weekly";
+  };
 
   powerManagement.cpuFreqGovernor = "performance";
 }

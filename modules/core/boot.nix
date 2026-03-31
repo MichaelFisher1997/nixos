@@ -6,7 +6,7 @@
   };
 
   boot.initrd.kernelModules = [ "amdgpu" "vfio_pci" ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   
   boot.kernelModules = [ 
     "btusb" "btintel" "btrtl" 
@@ -19,7 +19,6 @@
     "amd_pstate=active"
     "split_lock_detect=off"
     "nowatchdog"
-    "elevator=none"
     "vfio-pci.ids=1e4b:1202"
   ];
 
@@ -30,10 +29,14 @@
     "vm.dirty_background_ratio" = 3;
     "vm.dirty_expire_centisecs" = 300;
     "vm.dirty_writeback_centisecs" = 100;
+    "vm.max_map_count" = 2147483642;
     "kernel.perf_event_paranoid" = 1;
     "kernel.sched_cfs_bandwidth_slice_us" = 3000;
     "net.core.netdev_max_backlog" = 30000;
   };
+
+  boot.tmp.useTmpfs = true;
+  boot.tmp.tmpfsSize = "75%";
 
   boot.supportedFilesystems = [ "ntfs" ];
   boot.extraModprobeConfig = ''

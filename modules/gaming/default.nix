@@ -13,6 +13,7 @@
 
   programs.gamemode = {
     enable = true;
+    enableRenice = true;
     settings = {
       general = {
         renice = 10;
@@ -20,8 +21,18 @@
         softrealtime = "off";
         inhibit_screensaver = 1;
       };
+      gpu = {
+        apply_gpu_optimisations = "accept-responsibility";
+        gpu_device = 0;
+        amd_performance_level = "high";
+      };
     };
   };
+
+  services.udev.extraRules = ''
+    KERNEL=="event[0-9]*", SUBSYSTEM=="input", MODE="0664", GROUP="input"
+    KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"
+  '';
 
   environment.systemPackages = with pkgs; [
     protonup-qt
