@@ -4,10 +4,13 @@
     hostName = vars.hostName;
     networkmanager = {
       enable = true;
+      dns = "systemd-resolved";
       unmanaged = [ "docker0" "br-*" "veth*" "tailscale0" ];
     };
     dhcpcd.enable = false;
   };
+
+  services.resolved.enable = true;
 
   environment.etc."NetworkManager/conf.d/10-globally-managed-devices.conf" = {
     text = ''

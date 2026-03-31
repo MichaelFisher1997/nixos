@@ -5,7 +5,7 @@
     efi.canTouchEfiVariables = true;
   };
 
-  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.initrd.kernelModules = [ "amdgpu" "vfio_pci" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   
   boot.kernelModules = [ 
@@ -20,6 +20,7 @@
     "split_lock_detect=off"
     "nowatchdog"
     "elevator=none"
+    "vfio-pci.ids=1e4b:1202"
   ];
 
   boot.kernel.sysctl = {
@@ -37,5 +38,6 @@
   boot.supportedFilesystems = [ "ntfs" ];
   boot.extraModprobeConfig = ''
     options btusb reset=1
+    softdep nvme pre: vfio-pci
   '';
 }
