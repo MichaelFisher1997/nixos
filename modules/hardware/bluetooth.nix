@@ -1,4 +1,4 @@
-{ pkgs, vars, ... }:
+{ pkgs, vars, lib, ... }:
 {
   hardware.bluetooth = {
     enable = true;
@@ -16,7 +16,7 @@
   hardware.enableRedistributableFirmware = true;
 
   services.blueman.enable = true;
-
+} // lib.optionalAttrs (vars ? bluetooth && vars.bluetooth ? headsetMac) {
   systemd.user.services.bluetooth-headset-autoconnect = {
     description = "Auto-connect Bluetooth headset after boot";
     after = [ "bluetooth.target" "pipewire.service" ];

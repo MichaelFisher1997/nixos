@@ -1,0 +1,81 @@
+name: Deploy NixOS Hosts
+
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        description: Host to deploy
+        required: true
+        type: choice
+        default: both
+        options:
+          - both
+          - hypr-nix
+          - hyprtop
+
+jobs:
+  deploy-hypr-nix:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.host == 'both' || github.event.inputs.host == 'hypr-nix'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Load deploy SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      - name: Deploy hypr-nix
+        run: |
+          ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new micqdf@100.102.165.126 '
+            set -euo pipefail
+            repo_dir=/home/micqdf/.local/share/nixos-deploy/nix-config
+            mkdir -p /home/micqdf/.local/share/nixos-deploy
+            if [ ! -d "$repo_dir/.git" ]; then
+              git clone git@github.com:MichaelFisher1997/nixos.git "$repo_dir"
+            fi
+            cd "$repo_dir"
+            git fetch origin main
+            git checkout main
+            git reset --hard origin/main
+            sudo -n nixos-rebuild switch --flake "path:$repo_dir#hypr-nix"
+          '
+
+  deploy-hyprtop:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.host == 'both' || github.event.inputs.host == 'hyprtop'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Load deploy SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      - name: Deploy hyprtop
+        run: |
+          ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new micqdf@100.121.73.50 '
+            set -euo pipefail
+            repo_dir=/home/micqdf/.local/share/nixos-deploy/nix-config
+            mkdir -p /home/micqdf/.local/share/nixos-deploy
+            if [ ! -d "$repo_dir/.git" ]; then
+              git clone git@github.com:MichaelFisher1997/nixos.git "$repo_dir"
+            fi
+            cd "$repo_dir"
+            git fetch origin main
+            git checkout main
+            git reset --hard origin/main
+            sudo -n nixos-rebuild switch --flake "path:$repo_dir#hyprtop"
+          '

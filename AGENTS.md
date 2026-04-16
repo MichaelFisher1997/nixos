@@ -1,180 +1,66 @@
-# AGENTS.md - NixOS Configuration
+# AGENTS.md
 
-This is a NixOS system configuration repository managed with Nix Flakes.
+## Verification
 
-## Build / Deploy Commands
+- Main checks are:
+  - `nix flake check`
+  - `nixos-rebuild build --flake .#hypr-nix`
+  - `nixos-rebuild build --flake .#hyprtop`
+- Apply with:
+  - `sudo nixos-rebuild switch --flake /home/micqdf/nixos/nix-config#hypr-nix`
+  - `sudo nixos-rebuild switch --flake "path:/home/micqdf/nixos/nix-config#hyprtop"`
+- For workflow edits, lint with:
+  - `nix shell nixpkgs#actionlint -c actionlint .github/workflows/deploy.yml`
 
-```bash
-# Build and switch to new configuration (applies changes to running system)
-sudo nixos-rebuild switch --flake .#hypr-nix
+## Flake Gotcha
 
-# Build without switching (dry-run to verify config compiles)
-nixos-rebuild build --flake .#hypr-nix
+- New files under this repo must be tracked by Git before `nix flake check` or `nixos-rebuild build --flake .#...` can see them.
+- This matters most when adding a new host or module. Temporary `git add` is enough; uncommitted is fine.
 
-# Check flake evaluates without errors
-nix flake check
+## Repo Shape
 
-# Update all flake inputs
-nix flake update
+- `flake.nix` defines two hosts via `mkHost`:
+  - `hypr-nix`
+  - `hyprtop`
+- Shared modules live in `modules/`; host-specific wiring lives in `hosts/<host>/default.nix` plus `vars.nix`.
+- `specialArgs` passed to all modules are `vars`, `zen-browser`, and `unstable`.
 
-# Update a single input
-nix flake lock --update-input nixpkgs
+## Host-Specific Rules
 
-# View changes before applying
-nixos-rebuild build --flake .#hypr-nix && nixos-rebuild switch --flake .#hypr-nix
-```
+- `hypr-nix` uses the shared desktop/boot path:
+  - `modules/core/boot.nix`
+  - `modules/desktop/gnome.nix`
+  - `modules/hardware/gpu-amd.nix`
+- `hyprtop` is intentionally different:
+  - BIOS/GRUB boot in `hosts/hyprtop/boot.nix`
+  - Intel graphics via `modules/hardware/gpu-intel.nix`
+  - host-local `hosts/hyprtop/gnome.nix`
+  - `system.stateVersion = "23.11"`
+- `modules/core/system.nix` sets `system.stateVersion = lib.mkDefault "25.11"`; older hosts should override it in the host file, not by editing the shared module.
 
-There are no tests or lint commands. Validation is done via `nixos-rebuild build` and `nix flake check`.
+## vars.nix Conventions
 
-## Repository Structure
+- Required per host: `hostName`, `user.name`, `user.description`, `user.groups`, `nfs.server`, `nfs.exportPath`.
+- Optional per host:
+  - `bluetooth.headsetMac`
+  - `mounts.ssd2Uuid`
+- `modules/hardware/bluetooth.nix` and `modules/services/nfs.nix` already guard those optional attrs with `lib.optionalAttrs`; omit absent hardware instead of inventing placeholder values.
 
-```
-.
-├── flake.nix                  # Flake entrypoint - defines inputs, outputs, host configs
-├── flake.lock                 # Pinned input versions
-├── hosts/
-│   └── hypr-nix/
-│       ├── default.nix        # Host module imports (aggregates all modules)
-│       ├── vars.nix           # Host-specific variables (user, NFS, Bluetooth, mounts)
-│       └── hardware-configuration.nix  # Auto-generated hardware config (do not edit manually)
-└── modules/
-    ├── core/                  # Boot, nix settings, users, locale, system, fonts
-    ├── desktop/               # GNOME, Hyprland
-    ├── gaming/                # Steam, GameMode
-    ├── hardware/              # GPU (AMD), audio (PipeWire), Bluetooth
-    ├── networking/            # NetworkManager, Tailscale, firewall
-    ├── packages/              # System-wide packages
-    └── services/              # Docker, Sunshine, NFS, Thunar, printing, Flatpak, SSH
-```
+## Networking Gotcha
 
-## Architecture & Conventions
+- `modules/networking/default.nix` contains a hardcoded service that runs `nmcli device set enp8s0 managed yes`.
+- That is correct for `hypr-nix`, but it is not generic. When adding another host, either override it or move that logic host-local if the NIC name differs.
 
-### Flake Structure
+## SSH / Deploy
 
-- **Inputs**: `nixpkgs` (nixos-25.11), `nixpkgs-unstable`, `zen-browser`
-- **Output**: Single host `hypr-nix` at `nixosConfigurations.hypr-nix`
-- **specialArgs**: `vars`, `zen-browser`, `unstable` are passed to all modules
-- Host variables are imported from `hosts/<host>/vars.nix` and passed as `specialArgs.vars`
+- `modules/services/default.nix` configures the local user to prefer `~/.ssh/infra` for SSH via `programs.ssh.extraConfig`.
+- The same module grants passwordless sudo only for `/run/current-system/sw/bin/nixos-rebuild`; the GitHub deploy workflow depends on that already being applied on the target machine.
+- `.github/workflows/deploy.yml` deploys over Tailscale and expects repo secrets:
+  - `DEPLOY_SSH_KEY`
+  - `TAILSCALE_AUTHKEY`
+- The workflow deploys from a clean checkout at `/home/micqdf/.local/share/nixos-deploy/nix-config`, not from the user’s working tree. Commit and push changes before relying on the workflow.
 
-### Module Pattern
+## Fresh Host Bootstrap
 
-Every module follows the standard NixOS module pattern:
-
-```nix
-{ pkgs, ... }:  # Only destructure arguments you actually use
-{
-  # Configuration options here
-}
-```
-
-Common argument sets by module type:
-- **Core modules**: `{ pkgs, ... }`, `{ vars, ... }`, `{ lib, pkgs, ... }`
-- **Modules using vars**: `{ pkgs, vars, ... }`, `{ pkgs, vars, lib, unstable, ... }`
-- **Simple modules**: `{ ... }:` when no arguments are needed
-
-### Variable System (`vars.nix`)
-
-Host-specific values are centralized in `hosts/<host>/vars.nix`:
-- `hostName` - machine hostname
-- `user.name`, `user.description`, `user.groups` - user account details
-- `nfs.server`, `nfs.exportPath` - NFS mount configuration
-- `bluetooth.headsetMac` - Bluetooth device addresses
-- `mounts.ssd2Uuid` - filesystem UUIDs
-
-Access via `vars.` prefix (e.g., `vars.user.name`, `vars.nfs.server`).
-
-### Using Unstable Packages
-
-To use a package from `nixpkgs-unstable`, reference it through the `unstable` specialArg:
-
-```nix
-{ pkgs, unstable, ... }:
-{
-  services.tailscale.package = unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.tailscale;
-}
-```
-
-## Code Style Guidelines
-
-### Nix Formatting
-
-- **2-space indentation** throughout
-- Attribute sets: opening brace on same line as assignment
-- Lists: opening bracket on same line, items on separate lines for long lists, inline for short ones
-- Use `with pkgs;` for package lists: `environment.systemPackages = with pkgs; [ git vim ];`
-
-### Function Arguments
-
-- Always use the module function form `{ args, ... }:`
-- Use `{ ... }:` ellipsis pattern to accept additional arguments without error
-- **Only destructure arguments you use** - do not add unused arguments
-- Order: `pkgs` first, then `lib`, `vars`, `unstable`, `config` as needed
-
-```nix
-# Good - only needed args
-{ pkgs, ... }:
-
-# Good - multiple args when needed
-{ pkgs, vars, lib, unstable, ... }:
-
-# Bad - unused arguments
-{ pkgs, lib, config, vars, ... }:
-```
-
-### Imports & Module Organization
-
-- Group imports by category (core, desktop, hardware, services, etc.)
-- Use relative paths: `../../modules/category/module.nix`
-- One concern per module file
-- `default.nix` in each module directory can aggregate multiple related settings
-
-### Attribute Sets & Options
-
-- Use dot notation for nested config: `boot.loader.systemd-boot.enable = true;`
-- Group related options under their parent attribute when possible
-- Use `lib.mkForce` to override defaults, `lib.mkDefault` for sensible defaults
-- String interpolation with `${}` for variables: `"${vars.nfs.server}:${vars.nfs.exportPath}"`
-
-### Systemd Services
-
-When defining custom systemd services:
-- Always include `description`
-- Specify `wantedBy`, `after`, `wants` as appropriate
-- Use `Type = "oneshot"` for run-once tasks with `RemainAfterExit = true`
-- Reference packages explicitly: `${pkgs.bluez}/bin/bluetoothctl`
-
-### Filesystems & Mounts
-
-- Use UUID-based mounts: `/dev/disk/by-uuid/${vars.mounts.ssd2Uuid}`
-- Include `nofail` for external/removable mounts
-- Use systemd automount for network filesystems: `x-systemd.automount`, `x-systemd.idle-timeout`
-
-### Firewall Rules
-
-- Keep port ranges grouped: `allowedUDPPortRanges = [{ from = 47998; to = 48000; }]`
-- Individual ports in lists: `allowedTCPPorts = [ 47984 47989 47990 48010 ];`
-
-## Adding a New Module
-
-1. Create the module file in the appropriate `modules/<category>/` directory
-2. Follow the `{ pkgs, ... }:` pattern (or include other args as needed)
-3. Add the import to the host's `hosts/<host>/default.nix`
-4. Build-test with `nixos-rebuild build --flake .#hypr-nix`
-5. Apply with `sudo nixos-rebuild switch --flake .#hypr-nix`
-
-## Adding a New Host
-
-1. Create `hosts/<hostname>/` directory
-2. Generate hardware config: `nixos-generate-config --dir hosts/<hostname>`
-3. Create `hosts/<hostname>/vars.nix` with host-specific variables
-4. Create `hosts/<hostname>/default.nix` importing desired modules
-5. Add the new `nixosConfigurations` entry in `flake.nix`
-
-## Important Notes
-
-- **Never edit `hardware-configuration.nix`** - it is auto-generated
-- **hardware-configuration.nix is tracked in git** despite being auto-generated - only regenerate if hardware changes
-- The `vars.nix` file contains MAC addresses and UUIDs - these are host-specific and not secrets
-- When modifying boot/kernel config, always test with `nixos-rebuild build` before switching
-- `nixpkgs.config.allowUnfree = true` is set globally in `modules/packages/default.nix`
-- GNOME is the primary desktop; Hyprland is also available as a compositor option
+- A fresh NixOS install may not have `git` yet. Bootstrap the repo with:
+  - `nix --extra-experimental-features "nix-command flakes" shell nixpkgs#git -c git clone git@github.com:MichaelFisher1997/nixos.git ~/nixos/nix-config`

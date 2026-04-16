@@ -13,20 +13,22 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, zen-browser, ... }:
   let
-    vars = import ./hosts/hypr-nix/vars.nix;
-  in {
-    nixosConfigurations.hypr-nix = nixpkgs.lib.nixosSystem {
+    mkHost = hostName: vars: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
 
       modules = [
-        ./hosts/hypr-nix/default.nix
+        ./hosts/${hostName}/default.nix
       ];
 
       specialArgs = {
-        inherit vars;
-        inherit zen-browser;
+        inherit vars zen-browser;
         unstable = nixpkgs-unstable;
       };
+    };
+  in {
+    nixosConfigurations = {
+      hypr-nix = mkHost "hypr-nix" (import ./hosts/hypr-nix/vars.nix);
+      hyprtop = mkHost "hyprtop" (import ./hosts/hyprtop/vars.nix);
     };
   };
 }

@@ -1,27 +1,29 @@
 { pkgs, ... }:
 {
   boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+    grub = {
+      enable = true;
+      device = "/dev/nvme0n1";
+      useOSProber = true;
+    };
   };
 
-  boot.initrd.kernelModules = [ "amdgpu" "vfio_pci" ];
   boot.kernelPackages = pkgs.linuxPackages_zen;
-  
-  boot.kernelModules = [ 
-    "btusb" "btintel" "btrtl" 
-    "xpad" "usbhid" "hid_generic" 
+
+  boot.kernelModules = [
+    "btusb"
+    "btintel"
+    "btrtl"
+    "xpad"
+    "usbhid"
+    "hid_generic"
   ];
 
   boot.kernelParams = [
     "cgroup_enable=cpuset,cpu,cpuacct,blkio,devices,freezer,net_cls,perf_event,net_prio,hugetlb,pids"
     "usbcore.old_scheme_first=1"
-    "amd_pstate=active"
     "split_lock_detect=off"
     "nowatchdog"
-    "vfio-pci.ids=1e4b:1202"
-    "amdgpu.gpu_recovery=1"
-    "amdgpu.lockup_timeout=10000"
   ];
 
   boot.kernel.sysctl = {
@@ -50,7 +52,5 @@
   boot.supportedFilesystems = [ "ntfs" ];
   boot.extraModprobeConfig = ''
     options btusb reset=1
-    options r8169 rx_copybreak=256
-    softdep nvme pre: vfio-pci
   '';
 }

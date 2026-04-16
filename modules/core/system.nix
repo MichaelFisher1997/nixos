@@ -1,6 +1,6 @@
 { lib, pkgs, ... }:
 {
-  system.stateVersion = "25.11";
+  system.stateVersion = lib.mkDefault "25.11";
 
   system.autoUpgrade = {
     enable = false;

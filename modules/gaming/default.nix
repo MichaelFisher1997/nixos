@@ -23,7 +23,7 @@
       };
       gpu = {
         apply_gpu_optimisations = "accept-responsibility";
-        gpu_device = 0;
+        gpu_device = 1;
         amd_performance_level = "high";
       };
     };
@@ -32,6 +32,7 @@
   services.udev.extraRules = ''
     KERNEL=="event[0-9]*", SUBSYSTEM=="input", MODE="0664", GROUP="input"
     KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"
+    ACTION=="add", SUBSYSTEM=="drm", KERNEL=="card1", ATTR{device/power_dpm_force_performance_level}="high"
   '';
 
   environment.systemPackages = with pkgs; [

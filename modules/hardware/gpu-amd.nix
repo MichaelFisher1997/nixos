@@ -8,14 +8,12 @@
       rocmPackages.rpp
       vulkan-loader
       vulkan-extension-layer
-      libvdpau-va-gl
-      libva-vdpau-driver
       mesa
+      libva-utils
     ];
     extraPackages32 = with pkgs.pkgsi686Linux; [
       vulkan-loader
-      libvdpau-va-gl
-      libva-vdpau-driver
+      mesa
     ];
   };
 
