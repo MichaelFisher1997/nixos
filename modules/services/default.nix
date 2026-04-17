@@ -1,14 +1,5 @@
 { pkgs, lib, vars, ... }:
 {
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs.xfce; [
-      thunar-archive-plugin
-      thunar-volman
-    ];
-  };
-
-  services.tumbler.enable = true;
   services.gvfs.enable = lib.mkForce false;
 
   services.printing.enable = true;

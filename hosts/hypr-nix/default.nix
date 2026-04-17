@@ -20,6 +20,7 @@
     ../../modules/services/docker.nix
     ../../modules/services/sunshine.nix
     ../../modules/services/nfs.nix
+    ../../modules/services/desktop-files.nix
     ../../modules/services/default.nix
 
     ../../modules/networking/default.nix
