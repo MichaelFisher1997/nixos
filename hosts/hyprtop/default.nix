@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
     ./boot.nix
     ./gnome.nix
+    ./laptop.nix
 
     ../../modules/core/nix.nix
     ../../modules/core/users.nix
