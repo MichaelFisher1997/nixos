@@ -3,8 +3,10 @@
   hardware.brillo.enable = true;
 
   nix.settings = {
-    connect-timeout = 120;
+    connect-timeout = 30;
     http-connections = 10;
+    download-attempts = 2;
+    http2 = false;
   };
 
   networking.networkmanager.wifi.powersave = true;
