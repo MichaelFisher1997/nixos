@@ -27,4 +27,6 @@
     ../../modules/gaming/default.nix
     ../../modules/packages/default.nix
   ];
+
+  environment.systemPackages = [ pkgs.amdgpu_top ];
 }

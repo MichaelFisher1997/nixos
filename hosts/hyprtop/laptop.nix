@@ -2,7 +2,10 @@
 {
   hardware.brillo.enable = true;
 
-  powerManagement.cpuFreqGovernor = lib.mkForce "powersave";
+  networking.networkmanager.wifi.powersave = true;
+
+  services.thermald.enable = true;
+  services.sunshine.autoStart = lib.mkForce false;
 
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend";
@@ -53,18 +56,42 @@
   };
 
   systemd.services.set-default-power-profile = {
-    description = "Set default laptop power profile";
+    description = "Set laptop power profile from AC state";
     wantedBy = [ "multi-user.target" ];
+    wants = [ "power-profiles-daemon.service" ];
     after = [ "power-profiles-daemon.service" ];
-    path = [ pkgs.power-profiles-daemon ];
+    path = with pkgs; [ bash coreutils power-profiles-daemon ];
     script = ''
-      powerprofilesctl set balanced || true
+      set -eu
+
+      on_ac=0
+
+      for supply in /sys/class/power_supply/*; do
+        [ -d "$supply" ] || continue
+
+        if [ -r "$supply/type" ] && [ "$(cat "$supply/type")" = "Mains" ]; then
+          if [ -r "$supply/online" ] && [ "$(cat "$supply/online")" = "1" ]; then
+            on_ac=1
+            break
+          fi
+        fi
+      done
+
+      if [ "$on_ac" -eq 1 ]; then
+        powerprofilesctl set performance || true
+      else
+        powerprofilesctl set power-saver || true
+      fi
     '';
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
     };
   };
+
+  services.udev.extraRules = ''
+    ACTION=="change", SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_TYPE}=="Mains", RUN+="${pkgs.systemd}/bin/systemctl --no-block start set-default-power-profile.service"
+  '';
 
   systemd.user.services.hdmi-audio-auto-switch = {
     description = "Auto-switch laptop audio between HDMI and speakers";
@@ -140,9 +167,26 @@
   environment.systemPackages = with pkgs; [
     acpi
     brightnessctl
+    dmidecode
   ];
 
   services.pipewire.wireplumber.configPackages = [
+    (pkgs.writeTextDir "wireplumber/wireplumber.conf.d/90-laptop-audio-suspend.conf" ''
+      monitor.alsa.rules = [
+        {
+          matches = [
+            { node.name = "~alsa_input.*" }
+            { node.name = "~alsa_output.*" }
+            { node.name = "~bluez_*" }
+          ]
+          actions = {
+            update-props = {
+              session.suspend-timeout-seconds = 10
+            }
+          }
+        }
+      ]
+    '')
     (pkgs.writeTextDir "wireplumber/wireplumber.conf.d/70-hdmi-auto-switch.conf" ''
       monitor.alsa.rules = [
         {
