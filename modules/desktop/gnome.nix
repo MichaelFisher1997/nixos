@@ -1,6 +1,6 @@
 { lib, vars, ... }:
 let
-  gnomeVideoDrivers = vars.desktop.gnome.videoDrivers or [ "modesetting" ];
+  gnomeVideoDrivers = (((vars.desktop or {}).gnome or {}).videoDrivers or [ "modesetting" ]);
 in
 {
   services.xserver = {
