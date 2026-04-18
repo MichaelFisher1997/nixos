@@ -1,10 +1,13 @@
-{ pkgs, lib, ... }:
+{ lib, vars, ... }:
+let
+  gnomeVideoDrivers = vars.desktop.gnome.videoDrivers or [ "modesetting" ];
+in
 {
   services.xserver = {
     enable = true;
     xkb.layout = "gb";
     xkb.variant = "";
-    videoDrivers = [ "amdgpu" ];
+    videoDrivers = gnomeVideoDrivers;
   };
 
   services.displayManager.gdm.enable = true;

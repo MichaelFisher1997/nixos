@@ -1,4 +1,7 @@
 { pkgs, vars, lib, unstable, ... }:
+let
+  managedEthernetInterfaces = lib.concatStringsSep " " ((vars.networking or {}).ethernetManagedInterfaces or []);
+in
 {
   networking = {
     hostName = vars.hostName;
@@ -40,9 +43,17 @@
     after = [ "NetworkManager.service" ];
     wants = [ "NetworkManager.service" ];
     wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.networkmanager ];
+    path = [ pkgs.networkmanager pkgs.coreutils pkgs.gnugrep ];
     script = ''
-      nmcli device set enp8s0 managed yes || true
+      interfaces='${managedEthernetInterfaces}'
+
+      if [ -z "$interfaces" ]; then
+        interfaces="$(nmcli -t -f DEVICE,TYPE device status | grep ':ethernet:' | cut -d: -f1)"
+      fi
+
+      for interface in $interfaces; do
+        nmcli device set "$interface" managed yes || true
+      done
     '';
     serviceConfig = {
       Type = "oneshot";
@@ -54,11 +65,6 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 47984 47989 47990 48010 ];
-    allowedUDPPortRanges = [
-      { from = 47998; to = 48000; }
-      { from = 8000; to = 8010; }
-    ];
   };
 
   services.tailscale = {

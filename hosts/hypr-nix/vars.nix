@@ -19,4 +19,10 @@
     description = "micqdf";
     groups = [ "networkmanager" "wheel" "docker" "input" "video" "render" ];
   };
+
+  desktop = {
+    gnome = {
+      videoDrivers = [ "amdgpu" ];
+    };
+  };
 }

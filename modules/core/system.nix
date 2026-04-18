@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, vars, ... }:
+let
+  systemConfig = vars.system or {};
+  swapConfig = systemConfig.swapfile or {};
+  zramConfig = systemConfig.zram or {};
+in
 {
   system.stateVersion = lib.mkDefault "25.11";
 
@@ -31,15 +36,16 @@
     };
   };
 
-  swapDevices = [
-    { device = "/swapfile"; size = 16384; }
-  ];
+  swapDevices = lib.optional (swapConfig.enable or true) {
+    device = "/swapfile";
+    size = swapConfig.size or 16384;
+  };
 
   zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-    memoryPercent = 50;
-    priority = 999;
+    enable = zramConfig.enable or true;
+    algorithm = zramConfig.algorithm or "zstd";
+    memoryPercent = zramConfig.memoryPercent or 50;
+    priority = zramConfig.priority or 999;
   };
 
   services.fstrim = {
@@ -47,5 +53,5 @@
     interval = "weekly";
   };
 
-  powerManagement.cpuFreqGovernor = "performance";
+  powerManagement.cpuFreqGovernor = systemConfig.cpuFreqGovernor or "performance";
 }
