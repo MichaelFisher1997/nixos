@@ -1,13 +1,8 @@
-{ pkgs, ... }:
+{ ... }:
 {
   imports = [
     ./boot-common.nix
   ];
-
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
-  };
 
   boot.initrd.kernelModules = [ "amdgpu" "vfio_pci" ];
 
