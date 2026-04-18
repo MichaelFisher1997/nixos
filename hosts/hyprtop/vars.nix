@@ -21,4 +21,11 @@
   system = {
     cpuFreqGovernor = "powersave";
   };
+
+  boot = {
+    grub = {
+      device = "/dev/nvme0n1";
+      useOSProber = true;
+    };
+  };
 }
