@@ -2,6 +2,11 @@
 {
   hardware.brillo.enable = true;
 
+  nix.settings = {
+    connect-timeout = 30;
+    http-connections = 10;
+  };
+
   networking.networkmanager.wifi.powersave = true;
 
   services.thermald.enable = true;
