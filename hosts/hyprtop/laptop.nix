@@ -3,7 +3,7 @@
   hardware.brillo.enable = true;
 
   nix.settings = {
-    connect-timeout = 30;
+    connect-timeout = 120;
     http-connections = 10;
   };
 
