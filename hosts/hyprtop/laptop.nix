@@ -9,6 +9,8 @@
     http2 = false;
   };
 
+  networking.enableIPv6 = false;
+
   networking.networkmanager.wifi.powersave = true;
 
   services.thermald.enable = true;
