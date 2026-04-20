@@ -1,4 +1,4 @@
-{ pkgs, vars, home-manager, ... }:
+{ pkgs, vars, ... }:
 
 {
   imports = [
@@ -8,7 +8,6 @@
     ../../modules/core/locale.nix
     ../../modules/services/docker.nix
     ../../modules/services/nfs.nix
-    home-manager.nixosModules.home-manager
   ];
 
   boot.loader.grub.enable = false;
@@ -41,6 +40,7 @@
     wget
     curl
     git
+    home-manager
   ];
 
   services.openssh = {
@@ -49,10 +49,6 @@
   };
 
   hardware.enableRedistributableFirmware = true;
-
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.users.${vars.user.name} = import ./home.nix;
 
   system.stateVersion = "26.05";
 }

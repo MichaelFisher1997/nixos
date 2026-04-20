@@ -4,8 +4,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -13,7 +11,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, zen-browser, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, zen-browser, ... }:
   let
     mkHost = system: hostName: vars: nixpkgs.lib.nixosSystem {
       inherit system;
@@ -23,7 +21,7 @@
       ];
 
       specialArgs = {
-        inherit vars home-manager zen-browser;
+        inherit vars zen-browser;
         unstable = nixpkgs-unstable;
       };
     };
