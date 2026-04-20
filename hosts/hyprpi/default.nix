@@ -6,6 +6,7 @@
     ../../modules/core/nix.nix
     ../../modules/core/users.nix
     ../../modules/core/locale.nix
+    ../../modules/networking/default.nix
     ../../modules/services/docker.nix
     ../../modules/services/nfs.nix
   ];
