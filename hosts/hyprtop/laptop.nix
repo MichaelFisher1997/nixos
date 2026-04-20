@@ -3,9 +3,10 @@
   hardware.brillo.enable = true;
 
   nix.settings = {
-    connect-timeout = 30;
+    connect-timeout = 12;
+    stalled-download-timeout = 90;
     http-connections = 10;
-    download-attempts = 2;
+    download-attempts = 6;
     http2 = false;
   };
 

@@ -9,5 +9,7 @@
     ../../modules/hardware/gpu-amd.nix
   ];
 
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   environment.systemPackages = [ pkgs.amdgpu_top ];
 }
