@@ -2,6 +2,21 @@
 {
   hardware.brillo.enable = true;
 
+  boot.kernel.sysctl."net.ipv4.tcp_mtu_probing" = 1;
+
+  systemd.services.nix-daemon.environment = {
+    OPENSSL_CONF = pkgs.writeText "openssl-tls12.conf" ''
+      openssl_conf = openssl_init
+      [openssl_init]
+      ssl_conf = ssl_sect
+      [ssl_sect]
+      system_default = system_default_sect
+      [system_default_sect]
+      MaxProtocol = TLSv1.2
+      MinProtocol = TLSv1.2
+    '';
+  };
+
   nix.settings = {
     connect-timeout = 12;
     stalled-download-timeout = 90;
@@ -13,6 +28,44 @@
   networking.enableIPv6 = false;
 
   networking.networkmanager.wifi.powersave = true;
+
+  systemd.services.disable-wifi-tso = {
+    description = "Disable TCP Segmentation Offload on WiFi to fix iwlwifi TLS 1.3 bug";
+    after = [ "NetworkManager.service" ];
+    wants = [ "NetworkManager.service" ];
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.ethtool pkgs.iproute2 ];
+    script = ''
+      for attempt in $(seq 1 30); do
+        if ip link show wlp0s20f3 > /dev/null 2>&1; then
+          state=$(cat /sys/class/net/wlp0s20f3/operstate 2>/dev/null || echo "unknown")
+          if [ "$state" = "up" ]; then
+            ethtool -K wlp0s20f3 tso off gso off 2>/dev/null || true
+            echo "Disabled TSO/GSO on wlp0s20f3"
+            exit 0
+          fi
+        fi
+        sleep 2
+      done
+      echo "Timed out waiting for wlp0s20f3 to come up"
+      exit 1
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+  };
+
+  networking.networkmanager.dispatcherScripts = [
+    {
+      type = "basic";
+      source = pkgs.writeShellScript "nm-disable-wifi-tso" ''
+        if [ "$1" = "wlp0s20f3" ] && [ "$2" = "up" ]; then
+          ethtool -K wlp0s20f3 tso off gso off 2>/dev/null || true
+        fi
+      '';
+    }
+  ];
 
   services.thermald.enable = true;
   services.sunshine.autoStart = lib.mkForce false;
