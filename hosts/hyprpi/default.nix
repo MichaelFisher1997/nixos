@@ -14,8 +14,21 @@
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
 
-  networking.hostName = vars.hostName;
-  networking.networkmanager.enable = true;
+  networking.interfaces.enu1u1.mtu = 1500;
+
+  networking.networkmanager.ensureProfiles.profiles."Wired connection 1" = {
+    connection = {
+      id = "Wired connection 1";
+      type = "802-3-ethernet";
+      interface-name = "enu1u1";
+    };
+    "802-3-ethernet".mtu = 1500;
+    ethtool.feature-gro = "off";
+    ethtool.feature-gso = "off";
+    ethtool.feature-tso = "off";
+    ipv4.method = "auto";
+    ipv6.method = "auto";
+  };
 
   time.timeZone = "Europe/London";
 
