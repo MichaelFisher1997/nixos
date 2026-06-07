@@ -18,9 +18,9 @@
   };
 
   nix.settings = {
-    connect-timeout = 12;
-    stalled-download-timeout = 90;
-    http-connections = 10;
+    connect-timeout = 30;
+    stalled-download-timeout = 120;
+    http-connections = 4;
     download-attempts = 6;
     http2 = false;
   };
@@ -120,7 +120,7 @@
 
   systemd.services.set-default-power-profile = {
     description = "Set laptop power profile from AC state";
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = [ "graphical.target" ];
     wants = [ "power-profiles-daemon.service" ];
     after = [ "power-profiles-daemon.service" ];
     path = with pkgs; [ bash coreutils power-profiles-daemon ];
