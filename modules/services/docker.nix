@@ -1,6 +1,7 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
   virtualisation.docker.enable = true;
+  virtualisation.docker.package = pkgs.docker_29;
 
   systemd.sockets.docker = {
     wantedBy = [ "sockets.target" ];
