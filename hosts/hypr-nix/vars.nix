@@ -7,7 +7,7 @@
   };
 
   bluetooth = {
-    headsetMac = "41:42:32:63:0D:E8";
+    headsetMac = "84:9D:4B:09:B0:3B";
   };
 
   mounts = {

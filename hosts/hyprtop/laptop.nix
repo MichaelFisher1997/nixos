@@ -240,7 +240,6 @@
           matches = [
             { node.name = "~alsa_input.*" }
             { node.name = "~alsa_output.*" }
-            { node.name = "~bluez_*" }
           ]
           actions = {
             update-props = {
